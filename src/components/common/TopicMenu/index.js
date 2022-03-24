@@ -1,4 +1,5 @@
 import { Menu } from 'antd';
+import styled from 'styled-components';
 export default function TopicMenu({ topics, selectedKey, changeSelectedKey }) {
 	const styledTopics = [];
 	topics.forEach((topic, index) =>
@@ -9,8 +10,12 @@ export default function TopicMenu({ topics, selectedKey, changeSelectedKey }) {
 		)
 	);
 	return (
-		<Menu mode="inline" selectedKeys={[selectedKey]} theme="dark" style={{ height: '100%' }}>
+		<StyledMenu mode="inline" selectedKeys={[selectedKey]} theme="dark">
 			{styledTopics}
-		</Menu>
+		</StyledMenu>
 	);
 }
+
+const StyledMenu = styled(Menu)`
+	height: 100%;
+`;

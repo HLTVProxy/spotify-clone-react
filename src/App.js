@@ -4,6 +4,7 @@ import 'antd/dist/antd.css';
 import Header from './components/common/Header';
 import Sider from './components/common/Sider';
 import TopicMenu from './components/common/TopicMenu';
+import './index.css';
 
 const { Content } = Layout;
 
