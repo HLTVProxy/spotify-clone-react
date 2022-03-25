@@ -14,6 +14,10 @@ li {
 	list-style: none;
 }
 
+.App {
+	height: 100vh;
+}
+
 .content {
 	padding: 1rem;
 }
@@ -24,8 +28,14 @@ li {
 	padding: 0 24px;
 }
 
-.ant-menu-dark.ant-menu-inline {
+.ant-drawer-content, .ant-drawer-header, .ant-menu-dark.ant-menu-inline {
 	background-color: #000;
+}
+
+.ant-drawer-close {
+	color: #fff;
+	background-color: #000;
+	padding-top: 8px;
 }
 
 .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected.menu-selected-color {

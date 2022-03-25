@@ -13,6 +13,6 @@ export default function Index({ menu }) {
 }
 
 const StyledSider = styled(Sider)`
-	height: 100vh;
+	height: 100%;
 	margin-right: 24px;
 `;
