@@ -7,6 +7,11 @@ export default function MobileSider({
   selectedKey,
   changeSelectedKey,
 }) {
+  let urlTrans = {
+    '首頁': '', 
+    '搜尋': 'search', 
+    '你的音樂庫': 'playlists'
+  }
   let menuItems = topics.map((topic, index) => {
     return (
       <Menu.Item
@@ -14,17 +19,15 @@ export default function MobileSider({
         onClick={changeSelectedKey}
         key={index}
       >
-        <Link to={`/${topic}`}>{topic}</Link>
+        <Link to={`/${urlTrans[topic]}`}>{topic}</Link>
       </Menu.Item>
     );
   });
 
   return (
-    <Router>
       <StyledMenu mode="inline" selectedKeys={[selectedKey]} theme="dark">
         {menuItems}
       </StyledMenu>
-    </Router>
   );
 }
 
