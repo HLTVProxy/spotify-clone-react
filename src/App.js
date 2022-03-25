@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 import 'antd/dist/antd.css';
 import Header from './components/common/Header';
 import Sider from './components/common/Sider';
-import TopicMenu from './components/common/TopicMenu';
+import MobileSider from './components/common/MobileSider';
 import './index.css';
 
 const { Content, Footer } = Layout;
@@ -15,10 +15,10 @@ function App() {
   const changeSelectedKey = (event) => {
     const key = event.key;
     setSelectedKey(key);
-    setContentIndex(+key);
+    setContentIndex(key);
   };
   const Menu = (
-    <TopicMenu
+    <MobileSider
       topics={topics}
       selectedKey={selectedKey}
       changeSelectedKey={changeSelectedKey}

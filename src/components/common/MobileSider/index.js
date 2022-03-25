@@ -1,9 +1,9 @@
 import { Menu } from 'antd';
 import styled from 'styled-components';
-export default function TopicMenu({ topics, selectedKey, changeSelectedKey }) {
-  const styledTopics = [];
+export default function MobileSider({ topics, selectedKey, changeSelectedKey }) {
+  const menuItems = [];
   topics.forEach((topic, index) =>
-    styledTopics.push(
+    menuItems.push(
       <Menu.Item
         className="menu-selected-color"
         key={index}
@@ -15,7 +15,7 @@ export default function TopicMenu({ topics, selectedKey, changeSelectedKey }) {
   );
   return (
     <StyledMenu mode="inline" selectedKeys={[selectedKey]} theme="dark">
-      {styledTopics}
+      {menuItems}
     </StyledMenu>
   );
 }
