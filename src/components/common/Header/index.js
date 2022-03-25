@@ -9,7 +9,7 @@ const { Header } = Layout;
 export default function Index({ menu }) {
   const avatarMenu = (
     <AvatarMenu>
-      <Menu.Item>
+      <Menu.Item key="logout">
         <a rel="noopener noreferrer" href="#!">
           登出
         </a>
