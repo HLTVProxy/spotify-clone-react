@@ -10,7 +10,7 @@ export default function Index({ menu }) {
   const avatarMenu = (
     <AvatarMenu>
       <Menu.Item>
-        <a target="_blank" rel="noopener noreferrer" href="#!">
+        <a rel="noopener noreferrer" href="#!">
           登出
         </a>
       </Menu.Item>
