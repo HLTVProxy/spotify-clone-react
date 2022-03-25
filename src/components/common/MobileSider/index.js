@@ -1,22 +1,30 @@
 import { Menu } from 'antd';
 import styled from 'styled-components';
-export default function MobileSider({ topics, selectedKey, changeSelectedKey }) {
-  const menuItems = [];
-  topics.forEach((topic, index) =>
-    menuItems.push(
+import { BrowserRouter as Router, Link } from 'react-router-dom';
+
+export default function MobileSider({
+  topics,
+  selectedKey,
+  changeSelectedKey,
+}) {
+  let menuItems = topics.map((topic, index) => {
+    return (
       <Menu.Item
         className="menu-selected-color"
-        key={index}
         onClick={changeSelectedKey}
+        key={index}
       >
-        {topic}
+        <Link to={`/${topic}`}>{topic}</Link>
       </Menu.Item>
-    )
-  );
+    );
+  });
+
   return (
-    <StyledMenu mode="inline" selectedKeys={[selectedKey]} theme="dark">
-      {menuItems}
-    </StyledMenu>
+    <Router>
+      <StyledMenu mode="inline" selectedKeys={[selectedKey]} theme="dark">
+        {menuItems}
+      </StyledMenu>
+    </Router>
   );
 }
 
