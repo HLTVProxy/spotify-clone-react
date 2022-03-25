@@ -1,7 +1,13 @@
 import React from 'react';
+import { Layout } from 'antd';
+const { Content } = Layout;
 
 function Search() {
-  return <div>Search</div>;
+  return (
+    <Layout>
+      <Content>Search</Content>
+    </Layout>
+  );
 }
 
 export default Search;

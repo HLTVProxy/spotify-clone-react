@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout } from 'antd';
 const { Content } = Layout;
 
-function Index() {
+function Home() {
   return (
     <Layout>
       <Content>Home</Content>
@@ -10,4 +10,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default Home;
