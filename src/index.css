@@ -34,7 +34,7 @@ li {
   background-color: #000;
 }
 
-.ant-drawer-close {
+.ant-drawer-close .anticon-close {
   color: #fff;
   background-color: #000;
   padding-top: 8px;
@@ -43,4 +43,8 @@ li {
 .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal)
   .ant-menu-item-selected.menu-selected-color {
   background-color: #1db954;
+}
+
+.ant-menu-item.menu-selected-color:first-of-type {
+  margin-top: 16px;
 }
