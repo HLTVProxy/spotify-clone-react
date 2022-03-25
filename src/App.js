@@ -8,6 +8,7 @@ import Sider from './components/common/Sider';
 import MobileSider from './components/common/MobileSider';
 import Home from './components/content/Home';
 import Search from './components/content/Search';
+import PlayList from './components/content/PlayLists';
 
 const { Content, Footer } = Layout;
 
@@ -36,6 +37,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/search" element={<Search />} />
+            <Route exact path="/playlists" element={<PlayList />} />
           </Routes>
         </Layout>
       </Router>
