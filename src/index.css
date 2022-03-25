@@ -1,43 +1,46 @@
 @import '~antd/dist/antd.css';
 
 * {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 a {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 li {
-	list-style: none;
+  list-style: none;
 }
 
 .App {
-	height: 100vh;
+  height: 100vh;
 }
 
 .content {
-	padding: 1rem;
+  padding: 1rem;
 }
 
 /* Ant Design Custom */
 .ant-layout-header {
-	background-color: #000;
-	padding: 0 24px;
+  background-color: #000;
+  padding: 0 24px;
 }
 
-.ant-drawer-content, .ant-drawer-header, .ant-menu-dark.ant-menu-inline {
-	background-color: #000;
+.ant-drawer-content,
+.ant-drawer-header,
+.ant-menu-dark.ant-menu-inline {
+  background-color: #000;
 }
 
 .ant-drawer-close {
-	color: #fff;
-	background-color: #000;
-	padding-top: 8px;
+  color: #fff;
+  background-color: #000;
+  padding-top: 8px;
 }
 
-.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected.menu-selected-color {
-	background-color: #1db954;
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal)
+  .ant-menu-item-selected.menu-selected-color {
+  background-color: #1db954;
 }
