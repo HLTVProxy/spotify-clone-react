@@ -29,17 +29,16 @@ function App() {
   );
   return (
     <Layout className="App">
-      <Header menu={Menu} />
-      <Layout>
-        <Router>
+      <Router>
+        <Header menu={Menu} />
+        <Layout>
           <Sider menu={Menu} />
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/search" element={<Search />} />
           </Routes>
-        </Router>
-        {/* <Content className="content">{topics[contentIndex]}</Content> */}
-      </Layout>
+        </Layout>
+      </Router>
       <Footer>bottom</Footer>
     </Layout>
   );
