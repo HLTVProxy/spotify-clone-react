@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Layout } from 'antd';
 import 'antd/dist/antd.css';
@@ -13,13 +13,27 @@ import PlayList from './components/content/PlayLists';
 const { Content, Footer } = Layout;
 
 function App() {
-  const topics = ['首頁', '搜尋', '你的音樂庫'];
-  const [contentIndex, setContentIndex] = useState(0);
-  const [selectedKey, setSelectedKey] = useState('0');
+  const topics = [
+    {'name': '首頁', 'path': '/'},
+    {'name': '搜尋', 'path': '/search'},
+    {'name': '你的音樂庫', 'path': '/playlists'},
+  ];
+  const [selectedKey, setSelectedKey] = useState('');
+
+  useEffect(() => {
+    let pathName = window.location.pathname;
+    let topicIndex = 0;
+    topics.forEach((val, idx) => {
+      if (val.path === pathName) {
+        topicIndex = idx;
+      }
+    })
+    setSelectedKey(topicIndex.toString());
+  }, []);
+
   const changeSelectedKey = (event) => {
     const key = event.key;
     setSelectedKey(key);
-    setContentIndex(key);
   };
   const Menu = (
     <MobileSider
