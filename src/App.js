@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
 import { Layout } from 'antd';
-import 'antd/dist/antd.css';
 import './index.css';
 import Header from './components/common/Header';
 import Sider from './components/common/Sider';
 import MobileSider from './components/common/MobileSider';
 import Home from './components/content/Home';
 import Search from './components/content/Search';
-import PlayList from './components/content/PlayLists';
+import PlayLists from './components/content/PlayLists';
+import PlayList from './components/common/PlayList';
 
 const { Content, Footer } = Layout;
 
@@ -24,7 +24,7 @@ function App() {
     let pathName = window.location.pathname;
     let topicIndex = 0;
     topics.forEach((val, idx) => {
-      if (val.path === pathName) {
+      if (pathName.includes(val.path)) {
         topicIndex = idx;
       }
     })
@@ -51,7 +51,8 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/search" element={<Search />} />
-            <Route exact path="/playlists" element={<PlayList />} />
+            <Route exact path="/playlists" element={<PlayLists />} />
+            <Route exact path="/playlists/:id" element={<PlayList />} />
           </Routes>
         </Layout>
       </Router>
