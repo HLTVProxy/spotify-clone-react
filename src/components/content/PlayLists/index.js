@@ -6,7 +6,7 @@ import CardList from '../../common/CardList';
 function PlayLists() {
   return (
     <StyledContent>
-      <CardList title="播放清單" detail={false} />
+      <CardList title="播放清單" type='playlist' detail={false} />
     </StyledContent>
   );
 }

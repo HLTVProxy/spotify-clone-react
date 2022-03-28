@@ -1,40 +1,45 @@
-import React from 'react';
+import {useState} from 'react';
 import { Row, Col, Card } from 'antd';
 import styled from 'styled-components';
 const { Meta } = Card;
 
-function SongCardList({ title, type = 'song', detail = true }) {
+function CardList({ title, type = 'song', detail = true }) {
+  // const [url, setUrl] = useState(window.location);
+  const handleClick = type => {
+    if (type === 'playlist') {
+      window.location.replace(`${window.location}/aaaa`)
+    }
+  }
   // fake data
   let dataArr = [];
   for (let i = 0; i < 8; i++) {
     dataArr.push(
-      <Col span={3}>
-        <a href="/playlists/aaaa">
-          <StyledCard
-            hoverable
-            style={{ width: '100%', padding: 16 }}
-            cover={
-              <>
-                <img
-                  style={{
-                    borderRadius: type == 'artist' ? '50%' : '',
-                  }}
-                  alt="example"
-                  src="https://i.scdn.co/image/ab67616d00001e02a9faac440442a13742be9056"
-                />
-                <PlayButton>
-                  <div>
-                    <svg role="img" height="24" width="24" viewBox="0 0 24 24">
-                      <path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path>
-                    </svg>
-                  </div>
-                </PlayButton>
-              </>
-            }
-          >
-            <Meta title="歌曲名/歌手名" description="歌手名/描述" />
-          </StyledCard>
-        </a>
+      <Col xs={12} md={8} lg={8} xl={4} xxl={3}>
+        <StyledCard
+          hoverable
+          style={{ width: '100%', padding: 16 }}
+          cover={
+            <>
+              <img
+                style={{
+                  borderRadius: type == 'artist' ? '50%' : '',
+                }}
+                alt="example"
+                src="https://i.scdn.co/image/ab67616d00001e02a9faac440442a13742be9056"
+              />
+              <PlayButton>
+                <div>
+                  <svg role="img" height="24" width="24" viewBox="0 0 24 24">
+                    <path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path>
+                  </svg>
+                </div>
+              </PlayButton>
+            </>
+          }
+          onClick={() => handleClick(type)}
+        >
+          <Meta title="歌曲名/歌手名" description="歌手名/描述" />
+        </StyledCard>
       </Col>
     );
   }
@@ -51,7 +56,7 @@ function SongCardList({ title, type = 'song', detail = true }) {
   );
 }
 
-export default SongCardList;
+export default CardList;
 
 const StyledRow = styled(Row)`
   padding-top: 16px;
@@ -61,6 +66,9 @@ const StyledCol = styled(Col)`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  div {
+    cursor: pointer;
+  }
   a {
     color: #b3b3b3;
     &:hover {
