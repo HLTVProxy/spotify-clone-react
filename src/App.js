@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Layout } from 'antd';
 import './index.css';
 import Header from './components/common/Header';
@@ -49,10 +49,10 @@ function App() {
         <Layout>
           <Sider menu={Menu} />
           <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="/search" element={<Search />} />
-            <Route exact path="/playlists" element={<PlayLists />} />
-            <Route exact path="/playlists/:id" element={<PlayList />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/playlists" element={<PlayLists />} />
+            <Route path="/playlists/:id" element={<PlayList />} />
           </Routes>
         </Layout>
       </Router>
