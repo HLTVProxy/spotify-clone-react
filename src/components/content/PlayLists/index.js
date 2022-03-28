@@ -1,13 +1,14 @@
-import React from 'react'
+import React from 'react';
 import { Layout } from 'antd';
-const { Content } = Layout;
+import StyledContent from '../../common/Content';
+import CardList from '../../common/CardList';
 
-function PlayList() {
+function PlayLists() {
   return (
-    <Layout>
-      <Content>Play List</Content>
-    </Layout>
-  )
+    <StyledContent>
+      <CardList title="播放清單" detail={false} />
+    </StyledContent>
+  );
 }
 
-export default PlayList
+export default PlayLists;
