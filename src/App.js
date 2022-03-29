@@ -5,9 +5,9 @@ import './index.css';
 import Header from './components/common/Header';
 import Sider from './components/common/Sider';
 import MobileSider from './components/common/MobileSider';
-import Home from './components/content/Home';
-import Search from './components/content/Search';
-import PlayLists from './components/content/PlayLists';
+import Home from './components/pages/Home';
+import Search from './components/pages/Search';
+import PlayLists from './components/pages/PlayLists';
 import PlayList from './components/common/PlayList';
 
 const { Content, Footer } = Layout;
