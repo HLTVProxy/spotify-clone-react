@@ -1,5 +1,6 @@
 import React from 'react';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
+import { CaretRightOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 
 let data = [
@@ -191,7 +192,14 @@ const columns = [
     dataIndex: 'index',
     key: 'index',
     width: '1%',
-    responsive: ['sm'],
+    render: (order) => (
+      <>
+        <OrderNum className="order">
+          <span className="order-num">{order}</span>
+          <PlayButton icon={<CaretRightOutlined />} size="large" />
+        </OrderNum>
+      </>
+    ),
   },
   {
     title: '',
@@ -205,23 +213,29 @@ const columns = [
     dataIndex: 'title',
     key: 'title',
     width: '30%',
-    render: (title) => <StyledLink type='title'>{title}</StyledLink>
+    render: (title) => <StyledLink type="title">{title}</StyledLink>,
   },
   {
     title: '專輯',
     dataIndex: 'album',
     key: 'album',
     width: '30%',
-    render: (album) => <StyledLink type='album'>{album}</StyledLink>,
+    render: (album) => <StyledLink type="album">{album}</StyledLink>,
   },
+  // {
+  //   title: '已新增日期',
+  //   dataIndex: 'addDate',
+  //   key: 'addDate',
+  //   width: '30%',
+  //   responsive: ['sm'],
+  // },
   {
-    title: '已新增日期',
-    dataIndex: 'addDate',
-    key: 'addDate',
-    width: '30%',
+    title: '時長',
+    dataIndex: 'duration',
+    key: 'duration',
+    width: '6%',
     responsive: ['sm'],
   },
-  { title: '時長', dataIndex: 'duration', key: 'duration', width: '6%' },
 ];
 
 function SongList() {
@@ -246,6 +260,14 @@ const StyledTable = styled(Table)`
   }
   .ant-table-tbody > tr > td.ant-table-cell-row-hover {
     background-color: rgba(255, 255, 255, 0.1);
+    .order {
+      .order-num {
+        display: none;
+      }
+      button {
+        display: block;
+      }
+    }
   }
   @media (max-width: 576px) {
     padding-top: 16px;
@@ -253,9 +275,35 @@ const StyledTable = styled(Table)`
 `;
 
 const StyledLink = styled.a`
-  color: ${props => props.type === 'title' ? '#fff' : '#b3b3b3'};
+  color: ${(props) => (props.type === 'title' ? '#fff' : '#b3b3b3')};
   &:hover {
     color: #fff;
     text-decoration: underline;
+  }
+`;
+
+const OrderNum = styled.div`
+  color: #b3b3b3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  min-height: 30px;
+  min-width: 30px;
+  width: 30px;
+`;
+
+const PlayButton = styled(Button)`
+  display: none;
+  background-color: transparent;
+  color: #fff;
+  width: 30px;
+  border: none;
+  &:hover,
+  &:active,
+  &:focus {
+    cursor: default;
+    background-color: transparent;
+    color: #fff;
   }
 `;
