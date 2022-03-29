@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import StyledContent from '../../common/Content';
+import SongList from '../../common/PlayList/SongList';
 
 function Index() {
   let { id } = useParams();
@@ -29,6 +30,7 @@ function Index() {
           </div>
         </div>
       </Info>
+      <SongList />
     </StyledContent>
   );
 }
@@ -60,7 +62,7 @@ const Info = styled.div`
     padding-left: 32px;
   }
   .info-description {
-      color: rgba(255,255,255,.7);
+    color: rgba(255, 255, 255, 0.7);
   }
   .info-detail {
     display: flex;
@@ -68,5 +70,27 @@ const Info = styled.div`
   .total-songs-and-duration::before {
     content: '•';
     margin: 0 4px;
+  }
+  @media (max-width: 576px) {
+    flex-wrap: wrap;
+    .info-left, .info-right {
+      width: 100%;
+    }
+    .info-left {
+      display: flex;
+      justify-content: center;
+    }
+    .info-right {
+      display: flex;
+      align-items: center;
+      padding: 16px 16px 0;
+      h1 {
+        font-size: 28px;
+        padding-bottom: 8px;
+      }
+      h2 {
+        display: none;
+      }
+    }
   }
 `;
