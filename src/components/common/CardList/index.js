@@ -1,15 +1,14 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import { Row, Col, Card } from 'antd';
 import styled from 'styled-components';
 const { Meta } = Card;
 
 function CardList({ title, type = 'song', detail = true }) {
-  // const [url, setUrl] = useState(window.location);
-  const handleClick = type => {
+  const handleClick = (type) => {
     if (type === 'playlist') {
-      window.location.replace(`${window.location}/aaaa`)
+      window.location.href = `${window.location}/aaaa`;
     }
-  }
+  };
   // fake data
   let dataArr = [];
   for (let i = 0; i < 8; i++) {
@@ -27,17 +26,19 @@ function CardList({ title, type = 'song', detail = true }) {
                 alt="example"
                 src="https://i.scdn.co/image/ab67616d00001e02a9faac440442a13742be9056"
               />
-              <PlayButton>
-                <div>
-                  <svg role="img" height="24" width="24" viewBox="0 0 24 24">
-                    <path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path>
-                  </svg>
-                </div>
-              </PlayButton>
             </>
           }
-          onClick={() => handleClick(type)}
+          onClick={(e) => {
+            if (e.target.tagName === 'IMG' || e.target.tagName === 'DIV') {
+              handleClick(type);
+            }
+          }}
         >
+          <PlayButton>
+            <svg role="img" height="24" width="24" viewBox="0 0 24 24">
+              <path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path>
+            </svg>
+          </PlayButton>
           <Meta title="歌曲名/歌手名" description="歌手名/描述" />
         </StyledCard>
       </Col>
@@ -88,11 +89,11 @@ const StyledCard = styled(Card)`
   }
 
   &:hover button {
-    display: block;
+    display: flex;
   }
 
   .ant-card-body {
-    padding: 16px;
+    padding: 16px 0;
   }
 
   .ant-card-meta-title,
@@ -111,6 +112,8 @@ const StyledCard = styled(Card)`
 
 const PlayButton = styled.button`
   display: none;
+  justify-content: center;
+  align-items: center;
   width: 50px;
   height: 50px;
   background-color: #1db954;
@@ -119,16 +122,11 @@ const PlayButton = styled.button`
   position: absolute;
   bottom: 80px;
   right: 0;
+  z-index: 3;
   transition: 0.5s ease;
 
   &:hover {
     transform: scale(1.05);
     background-color: #1fdf64;
-  }
-
-  div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 `;
