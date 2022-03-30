@@ -1,15 +1,17 @@
-import React from 'react'
+import React from 'react';
 import { Layout } from 'antd';
 import styled from 'styled-components';
 const { Content } = Layout;
 
-function Index({children}) {
+function Index({ children }) {
   return (
-    <StyledContent>{children}</StyledContent>
-  )
+    <StyledContent>
+      {children}
+    </StyledContent>
+  );
 }
 
-export default Index
+export default Index;
 
 const StyledContent = styled(Content)`
   background-color: #121212;
