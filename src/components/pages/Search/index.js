@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Input } from 'antd';
 import styled from 'styled-components';
-import StyledContent from '../../common/Content';
 import { SearchOutlined } from '@ant-design/icons';
 function Search() {
   const [search, setSearch] = useState('');
   const [url, setUrl] = useState(window.location.href);
 
   useEffect(() => {
-      window.history.pushState("", "", `${url}/${search}`);
+    window.history.pushState('', '', `${url}/${search}`);
   }, [search]);
 
   const handleSearch = (text) => {
@@ -16,17 +15,15 @@ function Search() {
   };
 
   return (
-    <StyledContent>
-      <SearchBar
-        placeholder="藝人、歌曲或 Podcast"
-        prefix={<SearchOutlined />}
-        allowClear
-        onChange={(e) => {
-          handleSearch(e.target.value);
-        }}
-        value={search}
-      />
-    </StyledContent>
+    <SearchBar
+      placeholder="藝人、歌曲或 Podcast"
+      prefix={<SearchOutlined />}
+      allowClear
+      onChange={(e) => {
+        handleSearch(e.target.value);
+      }}
+      value={search}
+    />
   );
 }
 
