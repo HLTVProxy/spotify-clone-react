@@ -13,6 +13,7 @@ import MobileSider from './components/common/MobileSider';
 import StyledContent from './components/common/Content';
 import Home from './components/pages/Home';
 import Search from './components/pages/Search';
+import User from './components/pages/User';
 import PlayLists from './components/pages/Collection/PlayLists';
 import Artists from './components/pages/Collection/Artists';
 import Albums from './components/pages/Collection/Albums';
@@ -30,13 +31,17 @@ function App() {
 
   useEffect(() => {
     let pathName = window.location.pathname;
-    let topicIndex = 0;
-    topics.forEach((val, idx) => {
-      if (pathName.includes(val.path)) {
-        topicIndex = idx;
-      }
-    });
-    setSelectedKey(topics[topicIndex].key);
+    let key = '';
+    if (!pathName.includes('/user')) {
+      let topicIndex = 0;
+      topics.forEach((val, idx) => {
+        if (pathName.includes(val.path)) {
+          topicIndex = idx;
+        }
+      });
+      key = topics[topicIndex].key;
+    }
+    setSelectedKey(key);
   }, [window.location.pathname]);
 
   const changeSelectedKey = (event) => {
@@ -51,7 +56,7 @@ function App() {
       changeSelectedKey={changeSelectedKey}
     />
   );
-  
+
   return (
     <Layout className="App">
       <Router>
@@ -63,13 +68,17 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/search" element={<Search />} />
-                <Route path="/playlists/:id" element={<PlayList />} />
+                <Route path="/playlist/:id" element={<PlayList />} />
+                <Route path="/user" element={<User />} />
                 <Route
                   path="/collection"
                   element={<Navigate to="/collection/playlists" replace />}
                 />
                 <Route path="/collection/playlists" element={<PlayLists />} />
-                <Route path="/collection/playlists/:id" element={<PlayList />} />
+                <Route
+                  path="/collection/playlists/:id"
+                  element={<PlayList />}
+                />
                 <Route path="/collection/artists" element={<Artists />} />
                 <Route path="/collection/albums" element={<Albums />} />
               </Routes>

@@ -17,12 +17,12 @@ function AvatarMenu() {
         </a>
       </Menu.Item>
       <Menu.Item key="user">
-        <a rel="noopener noreferrer" href="#!">
+        <a href="/user">
           個人檔案
         </a>
       </Menu.Item>
       <Menu.Item key="logout">
-        <a rel="noopener noreferrer" href="#!">
+        <a rel="noopener noreferrer" href="/logout">
           登出
         </a>
       </Menu.Item>

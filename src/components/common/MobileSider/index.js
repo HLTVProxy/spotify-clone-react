@@ -25,19 +25,19 @@ export default function MobileSider({
       <StyledDiv>
         <StyledDivider />
         <Menu.Item key="aa" className="playlist-item">
-          <Link to={`playlists/a`}>playlist1</Link>
+          <Link to={`playlist/a`}>playlist1</Link>
         </Menu.Item>
         <Menu.Item key="ab" className="playlist-item">
-          <Link to={`playlists/b`}>playlist1</Link>
+          <Link to={`playlist/b`}>playlist1</Link>
         </Menu.Item>
         <Menu.Item key="ac" className="playlist-item">
-          <Link to={`playlists/c`}>playlist1</Link>
+          <Link to={`playlist/c`}>playlist1</Link>
         </Menu.Item>
         <Menu.Item key="ad" className="playlist-item">
-          <Link to={`playlists/d`}>playlist1</Link>
+          <Link to={`playlist/d`}>playlist1</Link>
         </Menu.Item>
         <Menu.Item key="ae" className="playlist-item">
-          <Link to={`playlists/e`}>playlist1</Link>
+          <Link to={`playlist/e`}>playlist1</Link>
         </Menu.Item>
       </StyledDiv>
     </StyledMenu>
