@@ -17,7 +17,7 @@ import User from './components/pages/User';
 import PlayLists from './components/pages/Collection/PlayLists';
 import Artists from './components/pages/Collection/Artists';
 import Albums from './components/pages/Collection/Albums';
-import PlayList from './components/common/PlayList';
+import PlayList from './components/pages/PlayList';
 
 const { Footer } = Layout;
 

@@ -238,20 +238,30 @@ const columns = [
   },
 ];
 
-function SongList() {
+function SongList({ title }) {
   return (
-    <StyledTable
-      columns={columns}
-      dataSource={data}
-      pagination={false}
-    ></StyledTable>
+    <StyledDiv>
+      {title != null ? <h1>{title}</h1> : ''}
+      <StyledTable
+        titleName={title}
+        columns={columns}
+        dataSource={data}
+        pagination={false}
+      ></StyledTable>
+    </StyledDiv>
   );
 }
 
 export default SongList;
 
+const StyledDiv = styled.div`
+  h1 {
+    padding-top: 16px;
+  }
+`;
+
 const StyledTable = styled(Table)`
-  padding-top: 64px;
+  padding-top: ${(props) => (props.titleName != null ? '8px' : '64px')};
   .ant-table table,
   .ant-table-thead > tr > th {
     background-color: #121212;
