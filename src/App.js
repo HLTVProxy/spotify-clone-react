@@ -5,6 +5,7 @@ import './index.css';
 import Header from './components/common/Header';
 import Sider from './components/common/Sider';
 import MobileSider from './components/common/MobileSider';
+import StyledContent from './components/common/Content';
 import Home from './components/pages/Home';
 import Search from './components/pages/Search';
 import PlayLists from './components/pages/PlayLists';
@@ -14,9 +15,9 @@ const { Content, Footer } = Layout;
 
 function App() {
   const topics = [
-    {'name': '首頁', 'path': '/'},
-    {'name': '搜尋', 'path': '/search'},
-    {'name': '你的音樂庫', 'path': '/playlists'},
+    { name: '首頁', path: '/' },
+    { name: '搜尋', path: '/search' },
+    { name: '你的音樂庫', path: '/playlists' },
   ];
   const [selectedKey, setSelectedKey] = useState('');
 
@@ -27,9 +28,9 @@ function App() {
       if (pathName.includes(val.path)) {
         topicIndex = idx;
       }
-    })
+    });
     setSelectedKey(topicIndex.toString());
-  }, []);
+  }, [window.location.pathname]);
 
   const changeSelectedKey = (event) => {
     const key = event.key;
@@ -48,12 +49,16 @@ function App() {
         <Header menu={Menu} />
         <Layout>
           <Sider menu={Menu} />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/playlists" element={<PlayLists />} />
-            <Route path="/playlists/:id" element={<PlayList />} />
-          </Routes>
+          <Layout>
+            <StyledContent>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/playlists" element={<PlayLists />} />
+                <Route path="/playlists/:id" element={<PlayList />} />
+              </Routes>
+            </StyledContent>
+          </Layout>
         </Layout>
       </Router>
       <Footer>bottom</Footer>
