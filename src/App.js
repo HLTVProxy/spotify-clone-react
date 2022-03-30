@@ -63,14 +63,15 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/search" element={<Search />} />
+                <Route path="/playlists/:id" element={<PlayList />} />
                 <Route
                   path="/collection"
                   element={<Navigate to="/collection/playlists" replace />}
                 />
                 <Route path="/collection/playlists" element={<PlayLists />} />
+                <Route path="/collection/playlists/:id" element={<PlayList />} />
                 <Route path="/collection/artists" element={<Artists />} />
                 <Route path="/collection/albums" element={<Albums />} />
-                <Route path="/playlists/:id" element={<PlayList />} />
               </Routes>
             </StyledContent>
           </Layout>
