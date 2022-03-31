@@ -33,15 +33,11 @@ function HotTrackList() {
       title: '飛鳥和蟬',
     },
     {
-      title: '飛鳥和蟬0',
+      title: '飛鳥和蟬',
     },
   ];
 
   const [collapse, setCollapse] = useState(false);
-
-  const handleCollapse = () => {
-    setCollapse(!collapse);
-  };
 
   return (
     <StyledDiv collapse={collapse}>
@@ -64,9 +60,13 @@ function HotTrackList() {
           </List.Item>
         )}
       />
-      <button className="collapse-track-btn" onClick={handleCollapse}>
+      <CollapseTrackButton
+        onClick={() => {
+          setCollapse(!collapse);
+        }}
+      >
         {collapse ? '顯示較少內容' : '檢視更多'}
-      </button>
+      </CollapseTrackButton>
     </StyledDiv>
   );
 }
@@ -116,17 +116,7 @@ const StyledDiv = styled.div`
   }
 
   .collapse-item {
-    display: ${(props) => (props.collapse ? 'flex' : 'none')};;
-  }
-
-  .collapse-track-btn {
-    background-color: transparent;
-    color: rgba(255, 255, 255, 0.7);
-    border: none;
-    padding-top: 16px;
-  }
-  .collapse-track-btn:hover {
-    color: #fff;
+    display: ${(props) => (props.collapse ? 'flex' : 'none')};
   }
 `;
 
@@ -152,6 +142,17 @@ const PlayButton = styled(Button)`
   &:focus {
     cursor: default;
     background-color: transparent;
+    color: #fff;
+  }
+`;
+
+const CollapseTrackButton = styled.button`
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  border: none;
+  padding-top: 16px;
+  margin-left: 16px;
+  &:hover {
     color: #fff;
   }
 `;
