@@ -18,6 +18,7 @@ import PlayLists from './components/pages/Collection/PlayLists';
 import Artists from './components/pages/Collection/Artists';
 import Albums from './components/pages/Collection/Albums';
 import PlayList from './components/pages/PlayList';
+import Artist from './components/pages/Artist';
 
 const { Footer } = Layout;
 
@@ -70,6 +71,7 @@ function App() {
                 <Route path="/search" element={<Search />} />
                 <Route path="/playlist/:id" element={<PlayList />} />
                 <Route path="/user" element={<User />} />
+                <Route path="/artist" element={<Artist />} />
                 <Route
                   path="/collection"
                   element={<Navigate to="/collection/playlists" replace />}

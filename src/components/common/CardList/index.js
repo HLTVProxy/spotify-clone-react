@@ -9,6 +9,8 @@ function CardList({ title, type = 'song', detail = true }) {
       window.location.href = `${window.location}/aaaa`;
     }
   };
+  const borderRadiusType = ['artist', 'fans', 'follow'];
+  const noPlayButtonType = ['fans', 'follow'];
   // fake data
   let dataArr = [];
   for (let i = 0; i < 8; i++) {
@@ -21,7 +23,7 @@ function CardList({ title, type = 'song', detail = true }) {
             <>
               <img
                 style={{
-                  borderRadius: type !== 'song' ? '50%' : '',
+                  borderRadius: borderRadiusType.includes(type) ? '50%' : '',
                 }}
                 alt="example"
                 src="https://i.scdn.co/image/ab67616d00001e02a9faac440442a13742be9056"
@@ -34,11 +36,16 @@ function CardList({ title, type = 'song', detail = true }) {
             }
           }}
         >
-          <PlayButton>
-            <svg role="img" height="24" width="24" viewBox="0 0 24 24">
-              <path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path>
-            </svg>
-          </PlayButton>
+          {noPlayButtonType.includes(type) ? (
+            ''
+          ) : (
+            <PlayButton>
+              <svg role="img" height="24" width="24" viewBox="0 0 24 24">
+                <path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path>
+              </svg>
+            </PlayButton>
+          )}
+
           <Meta title="歌曲名/歌手名" description="歌手名/描述" />
         </StyledCard>
       </Col>

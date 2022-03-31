@@ -5,6 +5,8 @@ const infoTitle = (type) => {
   switch (type) {
     case 'user':
       return '個人檔案';
+    case 'artist':
+      return '';
     case 'album':
       return '專輯';
     case 'single':
@@ -69,6 +71,7 @@ const Info = styled.div`
 
   img {
     width: 200px;
+    border-radius: ${(props) => (props.type == 'artist' ? '50%' : '')};
   }
 
   .info-right {
