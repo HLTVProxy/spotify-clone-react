@@ -23,11 +23,8 @@ function CollectionTabs() {
 
   const changeSelectedTab = (event) => {
     const key = event.key;
-    console.log(event);
     setSelectedTab(key);
   };
-
-  console.log(selectedTab);
 
   return (
     <Wrapper>
@@ -50,10 +47,12 @@ export default CollectionTabs;
 
 const Wrapper = styled.div`
   padding-top: 16px;
+  .ant-menu.ant-menu-dark {
+    background-color: #121212;
+  }
 `;
 
 const TabMenu = styled(Menu)`
-  background-color: #121212;
   color: #fff;
   border: none;
 
