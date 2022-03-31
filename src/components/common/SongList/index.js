@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button } from 'antd';
+import { Table, Button, Col } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 
@@ -39,151 +39,7 @@ let data = [
     album: '奔赴',
     addDate: '2022-03-29',
     duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
+  }
 ];
 
 const columns = [
@@ -238,10 +94,17 @@ const columns = [
   },
 ];
 
-function SongList({ title }) {
+function SongList({ title, detail = true }) {
   return (
     <StyledDiv>
-      {title != null ? <h1>{title}</h1> : ''}
+      {title != null ? (
+        <StyledCol span={24}>
+          <h1>{title}</h1>
+          {detail == true ? <a href="#!">查看全部</a> : ''}
+        </StyledCol>
+      ) : (
+        ''
+      )}
       <StyledTable
         titleName={title}
         columns={columns}
@@ -257,6 +120,21 @@ export default SongList;
 const StyledDiv = styled.div`
   h1 {
     padding-top: 16px;
+  }
+`;
+
+const StyledCol = styled(Col)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  div {
+    cursor: pointer;
+  }
+  a {
+    color: #b3b3b3;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `;
 
