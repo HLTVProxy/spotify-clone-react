@@ -21,7 +21,7 @@ function CardList({ title, type = 'song', detail = true }) {
             <>
               <img
                 style={{
-                  borderRadius: type == 'artist' ? '50%' : '',
+                  borderRadius: type !== 'song' ? '50%' : '',
                 }}
                 alt="example"
                 src="https://i.scdn.co/image/ab67616d00001e02a9faac440442a13742be9056"
@@ -49,7 +49,7 @@ function CardList({ title, type = 'song', detail = true }) {
       <StyledRow>
         <StyledCol span={24}>
           <h1>{title}</h1>
-          {detail == true ? <a href="#!">查看更多</a> : ''}
+          {detail == true ? <a href="#!">查看全部</a> : ''}
         </StyledCol>
       </StyledRow>
       <Row gutter={[16, 16]}>{dataArr}</Row>
@@ -67,6 +67,7 @@ const StyledCol = styled(Col)`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-top: 16px;
   div {
     cursor: pointer;
   }

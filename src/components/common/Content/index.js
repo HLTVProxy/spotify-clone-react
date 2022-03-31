@@ -16,7 +16,7 @@ export default Index;
 const StyledContent = styled(Content)`
   background-color: #121212;
   color: #fff;
-  padding: 0 32px;
+  padding: 0 32px 32px;
   overflow-x: hidden;
   overflow-y: scroll;
   h1 {
