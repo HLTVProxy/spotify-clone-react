@@ -3,6 +3,7 @@ import { Input } from 'antd';
 import styled from 'styled-components';
 import { SearchOutlined } from '@ant-design/icons';
 import GenreList from '../../common/GenreList';
+import SearchResult from '../../common/SearchResult'
 
 function Search() {
   const [search, setSearch] = useState('');
@@ -19,7 +20,7 @@ function Search() {
   return (
     <>
       <SearchBar
-        placeholder="藝人、歌曲或 Podcast"
+        placeholder="藝人、歌曲"
         prefix={<SearchOutlined />}
         allowClear
         onChange={(e) => {
@@ -27,7 +28,7 @@ function Search() {
         }}
         value={search}
       />
-      <GenreList />
+      {search !== '' ? <SearchResult /> : <GenreList />}
     </>
   );
 }
@@ -35,7 +36,10 @@ function Search() {
 export default Search;
 
 const SearchBar = styled(Input)`
-  width: 30%;
+  max-width: 992px;
   border-radius: 500px;
   margin-top: 32px;
+  @media (max-width: 576px) {
+    max-width: 100%;
+  }
 `;
