@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Row, Col, Card } from 'antd';
 import styled from 'styled-components';
 const { Meta } = Card;
@@ -10,9 +11,14 @@ function CardList({
   detailText = '查看全部',
   detailHref = '',
 }) {
+  let navigate = useNavigate();
   const handleClick = (type) => {
     if (type === 'playlist') {
-      window.location.href = `${window.location}/aaaa`;
+      navigate(`/collection/playlists/aaaa`);
+    } else if (type === 'artist') {
+      navigate(`/artist/aaaa`);
+    } else if (type === 'albums') {
+      navigate(`/album/aaaa`);
     }
   };
   const borderRadiusType = ['artist', 'fans', 'follow'];
@@ -63,11 +69,7 @@ function CardList({
       <Row>
         <StyledCol span={24}>
           <h1>{title}</h1>
-          {detail == true ? (
-            <a href={`${window.location.origin}${detailHref}`}>{detailText}</a>
-          ) : (
-            ''
-          )}
+          {detail == true ? <Link to={detailHref}>{detailText}</Link> : ''}
         </StyledCol>
       </Row>
       <Row gutter={[16, 16]}>{dataArr}</Row>
