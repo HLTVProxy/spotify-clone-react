@@ -3,7 +3,13 @@ import { Row, Col, Card } from 'antd';
 import styled from 'styled-components';
 const { Meta } = Card;
 
-function CardList({ title, type = 'song', detail = true, detailText = '查看全部' }) {
+function CardList({
+  title,
+  type = 'song',
+  detail = true,
+  detailText = '查看全部',
+  detailHref = ''
+}) {
   const handleClick = (type) => {
     if (type === 'playlist') {
       window.location.href = `${window.location}/aaaa`;
@@ -51,24 +57,25 @@ function CardList({ title, type = 'song', detail = true, detailText = '查看全
       </Col>
     );
   }
+
   return (
     <>
-      <StyledRow>
-        <StyledCol span={24}>
-          <h1>{title}</h1>
-          {detail == true ? <a href="#!">{detailText}</a> : ''}
-        </StyledCol>
-      </StyledRow>
+      {detail == true ? (
+        <Row>
+          <StyledCol span={24}>
+            <h1>{title}</h1>
+            <a href={`${window.location.origin}${detailHref}`}>{detailText}</a>
+          </StyledCol>
+        </Row>
+      ) : (
+        ''
+      )}
       <Row gutter={[16, 16]}>{dataArr}</Row>
     </>
   );
 }
 
 export default CardList;
-
-const StyledRow = styled(Row)`
-  padding-top: 16px;
-`;
 
 const StyledCol = styled(Col)`
   display: flex;

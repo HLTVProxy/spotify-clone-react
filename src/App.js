@@ -20,6 +20,8 @@ import Albums from './components/pages/Collection/Albums';
 import PlayList from './components/pages/PlayList';
 import Artist from './components/pages/Artist';
 import Album from './components/pages/Album';
+import ResultTracks from './components/pages/Results/Tracks';
+import ResultArtists from './components/pages/Results/Artists';
 
 const { Footer } = Layout;
 
@@ -33,6 +35,7 @@ function App() {
 
   useEffect(() => {
     let pathName = window.location.pathname;
+    console.log(window.location);
     let key = '';
     if (!pathName.includes('/user')) {
       let topicIndex = 0;
@@ -70,6 +73,9 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/search" element={<Search />} />
+                <Route path="/search/:searchText" element={<Search />} />
+                <Route path="/search/:searchText/tracks" element={<ResultTracks />} />
+                <Route path="/search/:searchText/artists" element={<ResultArtists />} />
                 <Route path="/playlist/:id" element={<PlayList />} />
                 <Route path="/user" element={<User />} />
                 <Route path="/artist" element={<Artist />} />

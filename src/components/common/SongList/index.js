@@ -94,10 +94,10 @@ const columns = [
   },
 ];
 
-function SongList({ title, detail = true }) {
+function SongList({ title = '', detail = true }) {
   return (
     <StyledDiv>
-      {title != null ? (
+      {title !== '' ? (
         <StyledCol span={24}>
           <h1>{title}</h1>
           {detail == true ? <a href="#!">查看全部</a> : ''}
