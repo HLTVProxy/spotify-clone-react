@@ -5,7 +5,7 @@ import SongList from '../../common/SongList';
 function PlayList() {
   return (
     <>
-      <InfoHeader />
+      <InfoHeader detail={true} />
       <SongList />
     </>
   );

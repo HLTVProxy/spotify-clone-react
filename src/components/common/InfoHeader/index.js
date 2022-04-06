@@ -16,9 +16,9 @@ const infoTitle = (type) => {
   }
 };
 
-function InfoHeader({ type = 'playlist', description = true }) {
+function InfoHeader({ type = 'playlist', description = true, detail = false }) {
   return (
-    <Info type={type} description={description}>
+    <Info type={type} description={description} detail={detail}>
       <div className="info-left">
         <img src="https://lineup-images.scdn.co/wrapped-2021-top100_LARGE-zh-Hant.jpg" />
       </div>
@@ -87,7 +87,7 @@ const Info = styled.div`
   }
 
   .info-detail {
-    display: ${(props) => (props.type !== 'playlist' ? 'none' : 'flex')};
+    display: ${(props) => (props.detail ? 'flex' : 'none')};
   }
 
   .user-public-status {
