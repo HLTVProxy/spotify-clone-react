@@ -5,10 +5,7 @@ import CardList from '../../common/CardList';
 function Artists() {
   let params = useParams();
   return (
-    <>
-      <h1>{`「${params.searchText}」的所有藝人`}</h1>
-      <CardList detail={false} />
-    </>
+    <CardList title={`「${params.searchText}」的所有藝人`} detail={false} />
   );
 }
 

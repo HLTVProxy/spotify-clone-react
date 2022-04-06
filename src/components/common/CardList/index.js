@@ -8,7 +8,7 @@ function CardList({
   type = 'song',
   detail = true,
   detailText = '查看全部',
-  detailHref = ''
+  detailHref = '',
 }) {
   const handleClick = (type) => {
     if (type === 'playlist') {
@@ -60,16 +60,16 @@ function CardList({
 
   return (
     <>
-      {detail == true ? (
-        <Row>
-          <StyledCol span={24}>
-            <h1>{title}</h1>
+      <Row>
+        <StyledCol span={24}>
+          <h1>{title}</h1>
+          {detail == true ? (
             <a href={`${window.location.origin}${detailHref}`}>{detailText}</a>
-          </StyledCol>
-        </Row>
-      ) : (
-        ''
-      )}
+          ) : (
+            ''
+          )}
+        </StyledCol>
+      </Row>
       <Row gutter={[16, 16]}>{dataArr}</Row>
     </>
   );
