@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Input } from 'antd';
 import styled from 'styled-components';
 import { SearchOutlined } from '@ant-design/icons';
+import GenreList from '../../common/GenreList';
+
 function Search() {
   const [search, setSearch] = useState('');
   const [url, setUrl] = useState(window.location.href);
@@ -15,15 +17,18 @@ function Search() {
   };
 
   return (
-    <SearchBar
-      placeholder="藝人、歌曲或 Podcast"
-      prefix={<SearchOutlined />}
-      allowClear
-      onChange={(e) => {
-        handleSearch(e.target.value);
-      }}
-      value={search}
-    />
+    <>
+      <SearchBar
+        placeholder="藝人、歌曲或 Podcast"
+        prefix={<SearchOutlined />}
+        allowClear
+        onChange={(e) => {
+          handleSearch(e.target.value);
+        }}
+        value={search}
+      />
+      <GenreList />
+    </>
   );
 }
 
