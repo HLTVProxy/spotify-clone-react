@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Row, Col } from 'antd';
 
@@ -41,10 +42,10 @@ let dataArr = [];
 for (let i = 0; i < 16; i++) {
   dataArr.push(
     <StyledCol xs={12} md={8} lg={8} xl={4} xxl={3} span={24}>
-      <a href="#!">
+      <Link to="/genre/hiphop">
         <img src="https://i.scdn.co/image/ab67706f000000029bb6af539d072de34548d15c" />
         <h3>嘻哈</h3>
-      </a>
+      </Link>
     </StyledCol>
   );
 }

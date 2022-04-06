@@ -22,6 +22,7 @@ import Artist from './components/pages/Artist';
 import Album from './components/pages/Album';
 import ResultTracks from './components/pages/Results/Tracks';
 import ResultArtists from './components/pages/Results/Artists';
+import Genre from './components/pages/Genre';
 
 const { Footer } = Layout;
 
@@ -35,7 +36,6 @@ function App() {
 
   useEffect(() => {
     let pathName = window.location.pathname;
-    console.log(window.location);
     let key = '';
     if (!pathName.includes('/user')) {
       let topicIndex = 0;
@@ -74,12 +74,19 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/search/:searchText" element={<Search />} />
-                <Route path="/search/:searchText/tracks" element={<ResultTracks />} />
-                <Route path="/search/:searchText/artists" element={<ResultArtists />} />
+                <Route
+                  path="/search/:searchText/tracks"
+                  element={<ResultTracks />}
+                />
+                <Route
+                  path="/search/:searchText/artists"
+                  element={<ResultArtists />}
+                />
                 <Route path="/playlist/:id" element={<PlayList />} />
                 <Route path="/user" element={<User />} />
-                <Route path="/artist" element={<Artist />} />
-                <Route path="/album" element={<Album />} />
+                <Route path="/artist/:id" element={<Artist />} />
+                <Route path="/album/:id" element={<Album />} />
+                <Route path="/genre/:name" element={<Genre />} />
                 <Route
                   path="/collection"
                   element={<Navigate to="/collection/playlists" replace />}
