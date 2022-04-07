@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
@@ -17,14 +18,12 @@ function AvatarMenu() {
         </a>
       </Menu.Item>
       <Menu.Item key="user">
-        <a href="/user">
-          個人檔案
-        </a>
+        <Link to="/user">個人檔案</Link>
       </Menu.Item>
       <Menu.Item key="logout">
-        <a rel="noopener noreferrer" href="/logout">
+        <Link to="/logout">
           登出
-        </a>
+        </Link>
       </Menu.Item>
     </StyledMenu>
   );
