@@ -3,7 +3,7 @@ import { List, Button } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 
-function HotTrackList() {
+function HotTrackList({title = '熱門', type = 'artist'}) {
   const data = [
     {
       title: '飛鳥和蟬',
@@ -41,7 +41,8 @@ function HotTrackList() {
 
   return (
     <StyledDiv collapse={collapse}>
-      <h1>熱門</h1>
+      {type === 'track' ? <span className="artist-hot-track-text">此藝人的熱門曲目：</span> : ''}
+      <h1>{title}</h1>
       <List
         itemLayout="horizontal"
         size="small"
@@ -75,6 +76,10 @@ export default HotTrackList;
 
 const StyledDiv = styled.div`
   padding-top: 16px;
+
+  .artist-hot-track-text {
+    color: #b3b3b3;
+  }
 
   .rank {
     color: #fff;

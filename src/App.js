@@ -23,6 +23,7 @@ import Album from './components/pages/Album';
 import ResultTracks from './components/pages/Results/Tracks';
 import ResultArtists from './components/pages/Results/Artists';
 import Genre from './components/pages/Genre';
+import Track from './components/pages/Track';
 
 const { Footer } = Layout;
 
@@ -87,6 +88,7 @@ function App() {
                 <Route path="/artist/:id" element={<Artist />} />
                 <Route path="/album/:id" element={<Album />} />
                 <Route path="/genre/:name" element={<Genre />} />
+                <Route path="/track/:id" element={<Track />} />
                 <Route
                   path="/collection"
                   element={<Navigate to="/collection/playlists" replace />}

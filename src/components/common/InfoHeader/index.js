@@ -9,8 +9,8 @@ const infoTitle = (type) => {
       return '';
     case 'album':
       return '專輯';
-    case 'single':
-      return '單曲';
+    case 'track':
+      return '歌曲';
     default:
       return '播放清單';
   }

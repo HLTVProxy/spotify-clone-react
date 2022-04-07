@@ -6,19 +6,32 @@ const { Meta } = Card;
 
 function CardList({
   title,
-  type = 'song',
+  type = 'albums',
   detail = true,
   detailText = '查看全部',
   detailHref = '',
 }) {
   let navigate = useNavigate();
   const handleClick = (type) => {
-    if (type === 'playlist') {
-      navigate(`/collection/playlists/aaaa`);
-    } else if (type === 'artist') {
-      navigate(`/artist/aaaa`);
-    } else if (type === 'albums') {
-      navigate(`/album/aaaa`);
+    switch (type) {
+      case 'playlist':
+        navigate(`/collection/playlists/aaaa`);
+        break;
+      case 'playlists':
+        navigate(`/playlist/aaaa`);
+        break;
+      case 'artist':
+        navigate(`/artist/aaaa`);
+        break;
+      case 'albums':
+        navigate(`/album/aaaa`);
+        break;
+      case 'tracks':
+        navigate(`/track/aaaa`);
+        break;
+      default:
+        navigate('/');
+        break;
     }
   };
   const borderRadiusType = ['artist', 'fans', 'follow'];
