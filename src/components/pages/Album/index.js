@@ -9,7 +9,7 @@ function Album() {
     <>
       <InfoHeader type="album" description={false} detail={true} />
       <ActionBar />
-      <SongList />
+      <SongList type="album" />
       <CardList title={`更多來自 任然 的內容`} type="album" detailText="查看音樂作品" />
     </>
   );

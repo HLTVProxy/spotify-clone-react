@@ -39,7 +39,7 @@ let data = [
     album: '奔赴',
     addDate: '2022-03-29',
     duration: '3:28',
-  }
+  },
 ];
 
 const columns = [
@@ -94,7 +94,7 @@ const columns = [
   },
 ];
 
-function SongList({ title = '', detail = true }) {
+function SongList({ title = '', detail = true, type = '' }) {
   return (
     <StyledDiv>
       {title !== '' ? (
@@ -111,6 +111,18 @@ function SongList({ title = '', detail = true }) {
         dataSource={data}
         pagination={false}
       ></StyledTable>
+      {type === 'album' ? (
+        <CopyRight>
+          <p className="OP">
+            <span>©</span>2022 大象音乐
+          </p>
+          <p className="SP">
+            <span style={{ fontSize: 16 }}>℗</span>2022 大象音乐
+          </p>
+        </CopyRight>
+      ) : (
+        ''
+      )}
     </StyledDiv>
   );
 }
@@ -159,6 +171,22 @@ const StyledTable = styled(Table)`
   }
   @media (max-width: 576px) {
     padding-top: 16px;
+  }
+`;
+
+const CopyRight = styled.div`
+  padding-top: 32px;
+  p {
+    font-size: 12px;
+    color: #b3b3b3;
+    margin: 0;
+  }
+  span {
+    padding-right: 4px;
+  }
+  .SP {
+    display: flex;
+    align-items: center;
   }
 `;
 
