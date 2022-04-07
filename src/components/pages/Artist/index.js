@@ -1,5 +1,6 @@
 import React from 'react';
 import InfoHeader from '../../common/InfoHeader';
+import ActionBar from '../../common/ActionBar';
 import HotTrackList from '../../common/HotTrackList';
 import CardList from '../../common/CardList';
 
@@ -7,6 +8,7 @@ function Artist() {
   return (
     <>
       <InfoHeader type="artist" />
+      <ActionBar type="artist" />
       <HotTrackList />
       <CardList title="專輯" type="albums" />
       <CardList title="單曲和迷你專輯" type="singles" />

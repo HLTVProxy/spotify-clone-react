@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import InfoHeader from '../../common/InfoHeader';
+import ActionBar from '../../common/ActionBar';
 import HotTrackList from '../../common/HotTrackList';
 import CardList from '../../common/CardList';
 import styled from 'styled-components';
@@ -11,6 +12,7 @@ function Track() {
   return (
     <>
       <InfoHeader type="track" description={false} detail={true} />
+      <ActionBar />
       <ArtistButton
         onClick={() => {
           navigate(`/artist/ccc`);
