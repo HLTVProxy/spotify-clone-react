@@ -11,6 +11,7 @@ import Header from './components/common/Header';
 import Sider from './components/common/Sider';
 import MobileSider from './components/common/MobileSider';
 import StyledContent from './components/common/Content';
+import Login from './components/pages/Login';
 import Home from './components/pages/Home';
 import Search from './components/pages/Search';
 import User from './components/pages/User';
@@ -28,11 +29,30 @@ import Track from './components/pages/Track';
 const { Footer } = Layout;
 
 function App() {
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('token');
+    console.log(token);
+    const hash = window.location.hash;
+    window.location.hash = '';
+    if (!token && hash) {
+      const _token = hash.split('&')[0].split('=')[1];
+      window.localStorage.setItem('token', _token);
+      setToken(_token);
+    } else {
+      setToken(token);
+    }
+  }, [window.localStorage.key('token')]);
+
+  // Sider selected menu
+
   const topics = [
     { key: 'home', name: '首頁', path: '/' },
     { key: 'search', name: '搜尋', path: '/search' },
     { key: 'collection', name: '你的音樂庫', path: '/collection' },
   ];
+
   const [selectedKey, setSelectedKey] = useState('');
 
   useEffect(() => {
@@ -63,7 +83,9 @@ function App() {
     />
   );
 
-  return (
+  return !token ? (
+    <Login />
+  ) : (
     <Layout className="App">
       <Router>
         <Header menu={Menu} />
