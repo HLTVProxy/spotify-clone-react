@@ -10,7 +10,9 @@ function CardList({
   detail = true,
   detailText = '查看全部',
   detailHref = '',
+  children,
 }) {
+  console.log(children);
   let navigate = useNavigate();
   const handleClick = (type) => {
     switch (type) {
@@ -38,6 +40,45 @@ function CardList({
   const noPlayButtonType = ['fans', 'follow'];
   // fake data
   let dataArr = [];
+  let dataArray = children.items.map((item) => {
+    return (
+      <Col xs={12} md={8} lg={8} xl={4} xxl={3}>
+        <StyledCard
+          hoverable
+          style={{ width: '100%', padding: 16 }}
+          cover={
+            <>
+              <img
+                style={{
+                  borderRadius: borderRadiusType.includes(type) ? '50%' : '',
+                }}
+                alt="cover image"
+                src={item.track.album.images[0].url}
+              />
+            </>
+          }
+          onClick={(e) => {
+            if (e.target.tagName === 'IMG' || e.target.tagName === 'DIV') {
+              handleClick(type);
+            }
+          }}
+        >
+          {noPlayButtonType.includes(type) ? (
+            ''
+          ) : (
+            <PlayButton>
+              <svg role="img" height="24" width="24" viewBox="0 0 24 24">
+                <path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path>
+              </svg>
+            </PlayButton>
+          )}
+
+          <Meta title={item.track.name} description={item.track.artists.map(artist => artist.name)} />
+        </StyledCard>
+      </Col>
+    );
+  });
+  // console.log(dataArray);
   for (let i = 0; i < 8; i++) {
     dataArr.push(
       <Col xs={12} md={8} lg={8} xl={4} xxl={3}>
@@ -85,7 +126,7 @@ function CardList({
           {detail == true ? <Link to={detailHref}>{detailText}</Link> : ''}
         </StyledCol>
       </Row>
-      <Row gutter={[16, 16]}>{dataArr}</Row>
+      <Row gutter={[16, 16]}>{dataArray}</Row>
     </>
   );
 }
