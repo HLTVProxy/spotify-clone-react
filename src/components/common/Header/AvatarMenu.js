@@ -21,9 +21,9 @@ function AvatarMenu() {
         <Link to="/user">個人檔案</Link>
       </Menu.Item>
       <Menu.Item key="logout">
-        <Link to="/logout">
-          登出
-        </Link>
+        <a href="/" onClick={() => {
+          window.localStorage.removeItem('token');
+        }}>登出</a>
       </Menu.Item>
     </StyledMenu>
   );
