@@ -6,6 +6,7 @@ import {
   Navigate,
 } from 'react-router-dom';
 import { Layout } from 'antd';
+import { setClientToken } from './spotify';
 import './index.css';
 import Header from './components/common/Header';
 import Sider from './components/common/Sider';
@@ -29,23 +30,24 @@ import Track from './components/pages/Track';
 const { Footer } = Layout;
 
 function App() {
+  // Spotify token
   const [token, setToken] = useState('');
-
   useEffect(() => {
     const token = window.localStorage.getItem('token');
-    console.log(token);
     const hash = window.location.hash;
     window.location.hash = '';
     if (!token && hash) {
       const _token = hash.split('&')[0].split('=')[1];
       window.localStorage.setItem('token', _token);
       setToken(_token);
+      setClientToken(_token);
     } else {
       setToken(token);
+      setClientToken(token);
     }
   }, [window.localStorage.key('token')]);
 
-  // Sider selected menu
+  // Sidebar selected menu
 
   const topics = [
     { key: 'home', name: '首頁', path: '/' },
@@ -54,7 +56,6 @@ function App() {
   ];
 
   const [selectedKey, setSelectedKey] = useState('');
-
   useEffect(() => {
     let pathName = window.location.pathname;
     let key = '';

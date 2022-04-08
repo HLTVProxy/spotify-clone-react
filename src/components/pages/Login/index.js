@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Logo from '../../../img/Spotify_Logo_RGB_White.png';
-import {loginEndpoint} from '../../../spotifyAuth';
+import { loginEndpoint } from '../../../spotify';
 
 function Login() {
   return (
@@ -39,6 +39,6 @@ const LoginButton = styled.a`
   border: none;
   border-radius: 8px;
   &:hover {
-      color: #fff;
+    color: #fff;
   }
 `;
