@@ -48,7 +48,6 @@ function App() {
   }, [window.localStorage.key('token')]);
 
   // Sidebar selected menu
-
   const topics = [
     { key: 'home', name: '首頁', path: '/' },
     { key: 'search', name: '搜尋', path: '/search' },

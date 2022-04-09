@@ -76,13 +76,17 @@ function CardList({
           <Meta
             title={item.title}
             description={
-              type === 'tracks'
-                ? item.descriptions.map((artist) => {
+              type === 'tracks' ? (
+                <div className="artist-links">
+                  {item.descriptions.map((artist) => {
                     return (
                       <Link to={`/artist/${artist.id}`}>{artist.name}</Link>
                     );
-                  })
-                : item.descriptions
+                  })}
+                </div>
+              ) : (
+                item.descriptions
+              )
             }
           />
         </StyledCard>
@@ -148,12 +152,23 @@ const StyledCard = styled(Card)`
     margin-bottom: 4px;
   }
 
-  .ant-card-meta-detail .ant-card-meta-description,
-  .ant-card-meta-detail .ant-card-meta-description a {
+  .artist-links {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+
+  .ant-card-meta-detail .ant-card-meta-description {
     color: #b3b3b3;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .ant-card-meta-detail .ant-card-meta-description a {
+    color: #b3b3b3;
     margin-right: 4px;
   }
 
