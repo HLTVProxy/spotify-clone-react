@@ -12,24 +12,24 @@ function CardList({
   detailHref = '',
   children,
 }) {
-  console.log(children);
+  // console.log(children);
   let navigate = useNavigate();
-  const handleClick = (type) => {
+  const handleClick = (type, id) => {
     switch (type) {
       case 'playlist':
-        navigate(`/collection/playlists/aaaa`);
+        navigate(`/collection/playlists/${id}`);
         break;
       case 'playlists':
-        navigate(`/playlist/aaaa`);
+        navigate(`/playlist/${id}`);
         break;
       case 'artist':
-        navigate(`/artist/aaaa`);
+        navigate(`/artist/${id}`);
         break;
       case 'albums':
-        navigate(`/album/aaaa`);
+        navigate(`/album/${id}`);
         break;
       case 'tracks':
-        navigate(`/track/aaaa`);
+        navigate(`/track/${id}`);
         break;
       default:
         navigate('/');
@@ -38,9 +38,9 @@ function CardList({
   };
   const borderRadiusType = ['artist', 'fans', 'follow'];
   const noPlayButtonType = ['fans', 'follow'];
-  // fake data
-  let dataArr = [];
-  let dataArray = children.items.map((item) => {
+
+  // Render card
+  let dataArray = children?.map((item) => {
     return (
       <Col xs={12} md={8} lg={8} xl={4} xxl={3}>
         <StyledCard
@@ -53,13 +53,13 @@ function CardList({
                   borderRadius: borderRadiusType.includes(type) ? '50%' : '',
                 }}
                 alt="cover image"
-                src={item.track.album.images[0].url}
+                src={item.coverUrl}
               />
             </>
           }
           onClick={(e) => {
             if (e.target.tagName === 'IMG' || e.target.tagName === 'DIV') {
-              handleClick(type);
+              handleClick(type, item.id);
             }
           }}
         >
@@ -73,57 +73,29 @@ function CardList({
             </PlayButton>
           )}
 
-          <Meta title={item.track.name} description={item.track.artists.map(artist => artist.name)} />
+          <Meta
+            title={item.title}
+            description={
+              type === 'tracks'
+                ? item.descriptions.map((artist) => {
+                    return (
+                      <Link to={`/artist/${artist.id}`}>{artist.name}</Link>
+                    );
+                  })
+                : item.descriptions
+            }
+          />
         </StyledCard>
       </Col>
     );
   });
-  // console.log(dataArray);
-  for (let i = 0; i < 8; i++) {
-    dataArr.push(
-      <Col xs={12} md={8} lg={8} xl={4} xxl={3}>
-        <StyledCard
-          hoverable
-          style={{ width: '100%', padding: 16 }}
-          cover={
-            <>
-              <img
-                style={{
-                  borderRadius: borderRadiusType.includes(type) ? '50%' : '',
-                }}
-                alt="example"
-                src="https://i.scdn.co/image/ab67616d00001e02a9faac440442a13742be9056"
-              />
-            </>
-          }
-          onClick={(e) => {
-            if (e.target.tagName === 'IMG' || e.target.tagName === 'DIV') {
-              handleClick(type);
-            }
-          }}
-        >
-          {noPlayButtonType.includes(type) ? (
-            ''
-          ) : (
-            <PlayButton>
-              <svg role="img" height="24" width="24" viewBox="0 0 24 24">
-                <path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path>
-              </svg>
-            </PlayButton>
-          )}
-
-          <Meta title="歌曲名/歌手名" description="歌手名/描述" />
-        </StyledCard>
-      </Col>
-    );
-  }
 
   return (
     <>
       <Row>
         <StyledCol span={24}>
           <h1>{title}</h1>
-          {detail == true ? <Link to={detailHref}>{detailText}</Link> : ''}
+          {detail === true ? <Link to={detailHref}>{detailText}</Link> : ''}
         </StyledCol>
       </Row>
       <Row gutter={[16, 16]}>{dataArray}</Row>
@@ -176,8 +148,17 @@ const StyledCard = styled(Card)`
     margin-bottom: 4px;
   }
 
-  .ant-card-meta-detail .ant-card-meta-description {
+  .ant-card-meta-detail .ant-card-meta-description,
+  .ant-card-meta-detail .ant-card-meta-description a {
     color: #b3b3b3;
+  }
+
+  .ant-card-meta-detail .ant-card-meta-description a {
+    margin-right: 4px;
+  }
+
+  .ant-card-meta-detail .ant-card-meta-description a:hover {
+    text-decoration: underline;
   }
 `;
 
@@ -191,7 +172,7 @@ const PlayButton = styled.button`
   border: none;
   border-radius: 50%;
   position: absolute;
-  bottom: 80px;
+  top: 140px;
   right: 0;
   z-index: 3;
   transition: 0.5s ease;

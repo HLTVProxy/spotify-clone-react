@@ -16,8 +16,12 @@ function Home() {
       .then((res) => {
         let recentlyPlayedTracksArr = res.data.items.map((item) => {
           return {
+            id: item.track.id,
             title: item.track.name,
-            artist: item.track.artists.map((artist) => artist.name),
+            descriptions: item.track.artists.map((artist) => {
+              return { id: artist.id, name: artist.name };
+            }),
+            coverUrl: item.track.album.images[0].url,
           };
         });
         setRecentlyPlayedTracks(recentlyPlayedTracksArr);
@@ -30,7 +34,7 @@ function Home() {
   return (
     <>
       <CardList title="最近播放" type="tracks" detailHref="/genre/recent-play">
-        {recentlyPlayedTracks}
+        {recentlyPlayedTracks.map((track) => track)}
       </CardList>
       {/* <CardList
         title="官方播放清單"

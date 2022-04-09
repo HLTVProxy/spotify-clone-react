@@ -17,6 +17,7 @@ const scopes = [
   'app-remote-control',
   'streaming',
   'user-read-private',
+  'user-read-email',
   'user-library-modify',
   'user-library-read',
 ];

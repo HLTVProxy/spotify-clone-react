@@ -22,7 +22,7 @@ export default function Index({ menu }) {
       .then((res) => {
         setProfileInfo({
           name: res.data.display_name,
-          avatarUrl: res.data.images[0].url,
+          avatarUrl: res.data.images[0]?.url,
         });
       })
       .catch((err) => {
