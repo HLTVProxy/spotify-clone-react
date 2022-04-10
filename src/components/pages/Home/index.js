@@ -7,20 +7,20 @@ import apiClient from '../../../spotify';
 function Home() {
   const [recentlyPlayedTracks, setRecentlyPlayedTracks] = useState([]);
   const [officialPlaylists, setOfficialPlaylists] = useState([]);
-  const [recommendations, setRecommendations] = useState([]);
+  const [recommendations, setRecommendations] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       const [recentlyPlayedTracksArr, officialPlaylistsArr] = await Promise.all(
         [fetchRecentlyPlayedTracks(), fetchOfficialPlaylists()]
       );
-      const recommendationsArr = await fetchRecommendations(
+      const [seed, recommendationsArr] = await fetchRecommendations(
         recentlyPlayedTracksArr
       );
 
       setRecentlyPlayedTracks(recentlyPlayedTracksArr);
       setOfficialPlaylists(officialPlaylistsArr);
-      setRecommendations(recommendationsArr);
+      setRecommendations({ seed: seed, tracksArr: recommendationsArr });
     };
     fetchData();
   }, []);
@@ -34,8 +34,11 @@ function Home() {
             id: item.track.id,
             uri: item.track.uri,
             title: item.track.name,
-            descriptions: item.track.artists.map((artist) => {
-              return { id: artist.id, name: artist.name };
+            artistIDs: item.track.artists.map((artist) => {
+              return artist.id;
+            }),
+            artistNames: item.track.artists.map((artist) => {
+              return artist.name;
             }),
             coverUrl: item.track.album.images[0].url,
           };
@@ -54,6 +57,7 @@ function Home() {
         let officialPlaylistsArr = res.data.playlists.items.map((item) => {
           return {
             id: item.id,
+            uri: item.uri,
             title: item.name,
             descriptions: item.description,
             coverUrl: item.images[0].url,
@@ -79,14 +83,18 @@ function Home() {
         let recommendationsArr = res.data.tracks.map((item) => {
           return {
             id: item.id,
+            uri: item.uri,
             title: item.name,
-            descriptions: item.artists.map((artist) => {
-              return { id: artist.id, name: artist.name };
+            artistIDs: item.artists.map((artist) => {
+              return artist.id;
+            }),
+            artistNames: item.artists.map((artist) => {
+              return artist.name;
             }),
             coverUrl: item.album.images[0].url,
           };
         });
-        return recommendationsArr;
+        return [seed.join('%2C'), recommendationsArr];
       })
       .catch((err) => {
         console.log(err);
@@ -104,7 +112,6 @@ function Home() {
           {recentlyPlayedTracks}
         </CardList>
       )}
-
       {officialPlaylists && (
         <CardList
           title="官方播放清單"
@@ -115,8 +122,12 @@ function Home() {
         </CardList>
       )}
       {recommendations && (
-        <CardList title="猜你喜歡" detailHref="/genre/recommendations" type="tracks">
-          {recommendations}
+        <CardList
+          title="猜你喜歡"
+          detailHref="/genre/recommendations"
+          type="tracks"
+        >
+          {recommendations.tracksArr}
         </CardList>
       )}
     </>

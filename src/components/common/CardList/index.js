@@ -83,9 +83,9 @@ function CardList({
             description={
               type === 'tracks' ? (
                 <div className="artist-links">
-                  {item.descriptions.map((artist) => {
+                  {item.artistIDs.map((artistID, idx) => {
                     return (
-                      <Link to={`/artist/${artist.id}`}>{artist.name}</Link>
+                      <Link to={`/artist/${artistID}`}>{item.artistNames[idx]}</Link>
                     );
                   })}
                 </div>
@@ -192,7 +192,8 @@ const PlayButton = styled.button`
   border: none;
   border-radius: 50%;
   position: absolute;
-  top: 140px;
+  top: 50%;
+  right: 0%;
   right: 0;
   z-index: 3;
   transition: 0.5s ease;

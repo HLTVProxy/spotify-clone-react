@@ -13,6 +13,7 @@ function Player({ token }) {
         token={token}
         uris={currentPlayerUri}
         play={currentPlayerUri ? true : false}
+        initialVolume={0.5}
       />
     </PlayerDiv>
   );
@@ -21,7 +22,8 @@ function Player({ token }) {
 export default Player;
 
 const PlayerDiv = styled(Footer)`
-  padding: 0;
+  padding: 16px;
+  background-color: #000;
   color: #fff;
   .PlayerRSWP {
     background-color: #000 !important;
@@ -29,6 +31,9 @@ const PlayerDiv = styled(Footer)`
     ._ControlsRSWP button,
     ._ActionsRSWP button {
       color: #fff;
+    }
+    ._DevicesRSWP div button{
+      color: #000;
     }
   }
 `;

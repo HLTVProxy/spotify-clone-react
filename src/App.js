@@ -110,7 +110,7 @@ function App() {
                   <Route path="/user" element={<User />} />
                   <Route path="/artist/:id" element={<Artist />} />
                   <Route path="/album/:id" element={<Album />} />
-                  <Route path="/genre/:name" element={<Genre />} />
+                  <Route path="/genre/:id" element={<Genre />} />
                   <Route path="/track/:id" element={<Track />} />
                   <Route
                     path="/collection"
