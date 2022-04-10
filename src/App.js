@@ -11,6 +11,7 @@ import './index.css';
 import Header from './components/common/Header';
 import Sider from './components/common/Sider';
 import MobileSider from './components/common/MobileSider';
+import Player from './components/common/Player';
 import StyledContent from './components/common/Content';
 import Login from './components/pages/Login';
 import Home from './components/pages/Home';
@@ -26,8 +27,7 @@ import ResultTracks from './components/pages/Results/Tracks';
 import ResultArtists from './components/pages/Results/Artists';
 import Genre from './components/pages/Genre';
 import Track from './components/pages/Track';
-
-const { Footer } = Layout;
+import { PlayerProvider } from './contexts/PlayerContext';
 
 function App() {
   // Spotify token
@@ -87,47 +87,49 @@ function App() {
     <Login />
   ) : (
     <Layout className="App">
-      <Router>
-        <Header menu={Menu} />
-        <Layout>
-          <Sider menu={Menu} />
+      <PlayerProvider>
+        <Router>
+          <Header menu={Menu} />
           <Layout>
-            <StyledContent>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/search/:searchText" element={<Search />} />
-                <Route
-                  path="/search/:searchText/tracks"
-                  element={<ResultTracks />}
-                />
-                <Route
-                  path="/search/:searchText/artists"
-                  element={<ResultArtists />}
-                />
-                <Route path="/playlist/:id" element={<PlayList />} />
-                <Route path="/user" element={<User />} />
-                <Route path="/artist/:id" element={<Artist />} />
-                <Route path="/album/:id" element={<Album />} />
-                <Route path="/genre/:name" element={<Genre />} />
-                <Route path="/track/:id" element={<Track />} />
-                <Route
-                  path="/collection"
-                  element={<Navigate to="/collection/playlists" replace />}
-                />
-                <Route path="/collection/playlists" element={<PlayLists />} />
-                <Route
-                  path="/collection/playlists/:id"
-                  element={<PlayList />}
-                />
-                <Route path="/collection/artists" element={<Artists />} />
-                <Route path="/collection/albums" element={<Albums />} />
-              </Routes>
-            </StyledContent>
+            <Sider menu={Menu} />
+            <Layout>
+              <StyledContent>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/search" element={<Search />} />
+                  <Route path="/search/:searchText" element={<Search />} />
+                  <Route
+                    path="/search/:searchText/tracks"
+                    element={<ResultTracks />}
+                  />
+                  <Route
+                    path="/search/:searchText/artists"
+                    element={<ResultArtists />}
+                  />
+                  <Route path="/playlist/:id" element={<PlayList />} />
+                  <Route path="/user" element={<User />} />
+                  <Route path="/artist/:id" element={<Artist />} />
+                  <Route path="/album/:id" element={<Album />} />
+                  <Route path="/genre/:name" element={<Genre />} />
+                  <Route path="/track/:id" element={<Track />} />
+                  <Route
+                    path="/collection"
+                    element={<Navigate to="/collection/playlists" replace />}
+                  />
+                  <Route path="/collection/playlists" element={<PlayLists />} />
+                  <Route
+                    path="/collection/playlists/:id"
+                    element={<PlayList />}
+                  />
+                  <Route path="/collection/artists" element={<Artists />} />
+                  <Route path="/collection/albums" element={<Albums />} />
+                </Routes>
+              </StyledContent>
+            </Layout>
           </Layout>
-        </Layout>
-      </Router>
-      <Footer>bottom</Footer>
+        </Router>
+        <Player token={token} />
+      </PlayerProvider>
     </Layout>
   );
 }

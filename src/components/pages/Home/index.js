@@ -32,6 +32,7 @@ function Home() {
         let recentlyPlayedTracksArr = res.data.items.map((item) => {
           return {
             id: item.track.id,
+            uri: item.track.uri,
             title: item.track.name,
             descriptions: item.track.artists.map((artist) => {
               return { id: artist.id, name: artist.name };
@@ -100,7 +101,7 @@ function Home() {
           type="tracks"
           detailHref="/genre/recent-play"
         >
-          {recentlyPlayedTracks.map((track) => track)}
+          {recentlyPlayedTracks}
         </CardList>
       )}
 
@@ -110,12 +111,12 @@ function Home() {
           type="playlists"
           detailHref="/genre/official-playlists"
         >
-          {officialPlaylists.map((playlist) => playlist)}
+          {officialPlaylists}
         </CardList>
       )}
       {recommendations && (
         <CardList title="猜你喜歡" detailHref="/genre/recommendations" type="tracks">
-          {recommendations.map((recommendation) => recommendation)}
+          {recommendations}
         </CardList>
       )}
     </>

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Row, Col, Card } from 'antd';
 import styled from 'styled-components';
+import PlayerContext from '../../../contexts/PlayerContext';
 const { Meta } = Card;
 
 function CardList({
@@ -12,7 +13,6 @@ function CardList({
   detailHref = '',
   children,
 }) {
-  // console.log(children);
   let navigate = useNavigate();
   const handleClick = (type, id) => {
     switch (type) {
@@ -36,8 +36,11 @@ function CardList({
         break;
     }
   };
+
   const borderRadiusType = ['artist', 'fans', 'follow'];
   const noPlayButtonType = ['fans', 'follow'];
+
+  const { playTrack } = useContext(PlayerContext);
 
   // Render card
   let dataArray = children?.map((item) => {
@@ -60,6 +63,8 @@ function CardList({
           onClick={(e) => {
             if (e.target.tagName === 'IMG' || e.target.tagName === 'DIV') {
               handleClick(type, item.id);
+            } else {
+              playTrack(item.uri);
             }
           }}
         >
