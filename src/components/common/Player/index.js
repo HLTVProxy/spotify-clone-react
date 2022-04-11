@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import SpotifyPlayer from 'react-spotify-web-playback';
 import { Layout } from 'antd';
 import styled from 'styled-components';
@@ -6,14 +6,27 @@ import PlayerContext from '../../../contexts/PlayerContext';
 const { Footer } = Layout;
 
 function Player({ token }) {
-  const { currentPlayerUri } = useContext(PlayerContext);
-  return !token ? '' : (
+  const { currentPlayerUri, setIsPlay, isPlay } = useContext(PlayerContext);
+  const [trackUri, setTrackUri] = useState('');
+  useEffect(() => {
+    setTrackUri(currentPlayerUri);
+    setIsPlay(true);
+  }, [currentPlayerUri]);
+  return !token ? (
+    ''
+  ) : (
     <PlayerDiv>
       <SpotifyPlayer
         token={token}
-        uris={currentPlayerUri}
-        play={currentPlayerUri ? true : false}
+        uris={trackUri}
+        play={isPlay}
         initialVolume={0.5}
+        callback={(state) => {
+          if (state.isPlaying === false) {
+            setTrackUri('');
+            setIsPlay(false);
+          }
+        }}
       />
     </PlayerDiv>
   );
@@ -32,9 +45,8 @@ const PlayerDiv = styled(Footer)`
     ._ActionsRSWP button {
       color: #fff;
     }
-    ._DevicesRSWP div button{
+    ._DevicesRSWP div button {
       color: #000;
     }
   }
 `;
-
