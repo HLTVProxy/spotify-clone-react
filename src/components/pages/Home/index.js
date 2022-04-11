@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Layout } from 'antd';
 import StyledContent from '../../common/Content';
 import CardList from '../../common/CardList';
 import apiClient from '../../../spotify';
+import SeedContext from '../../../contexts/TrackSeedContext';
 
 function Home() {
   const [recentlyPlayedTracks, setRecentlyPlayedTracks] = useState([]);
   const [officialPlaylists, setOfficialPlaylists] = useState([]);
   const [recommendations, setRecommendations] = useState({});
+  const { generateSeed } = useContext(SeedContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,6 +21,7 @@ function Home() {
       );
 
       setRecentlyPlayedTracks(recentlyPlayedTracksArr);
+      generateSeed(recentlyPlayedTracksArr);
       setOfficialPlaylists(officialPlaylistsArr);
       setRecommendations({ seed: seed, tracksArr: recommendationsArr });
     };

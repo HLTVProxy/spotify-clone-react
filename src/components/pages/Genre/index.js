@@ -1,10 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import CardList from '../../common/CardList';
 import apiClient from '../../../spotify';
+import SeedContext from '../../../contexts/TrackSeedContext';
 
 function Genre() {
   let params = useParams();
+  const { seed } = useContext(SeedContext);
+  let tracksSeed = [];
+      seed.forEach((item, idx) => {
+      if (idx < 5) {
+        tracksSeed.push(item.id);
+      }
+    });
+  
   let defaultArr = [
     {
       id: 'recent-play',
@@ -19,9 +28,10 @@ function Genre() {
     {
       id: 'recommendations',
       name: '猜你喜歡',
-      fetchUrl: 'browse/featured-playlists?country=TW&limit=8',
+      fetchUrl: `recommendations?limit=50&seed_tracks=${tracksSeed.join('%2C')}`,
     },
   ];
+
   let currentGenre = {};
   defaultArr.forEach((item) => {
     if (item.id === params.id) {
@@ -38,6 +48,9 @@ function Genre() {
         break;
       case 'official-playlists':
         fetchOfficialPlaylists();
+        break;
+      case 'recommendations':
+        fetchRecommendations();
         break;
       default:
         break;
@@ -84,6 +97,31 @@ function Genre() {
           };
         });
         setData(officialPlaylistsArr);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const fetchRecommendations = () => {
+    return apiClient
+      .get(currentGenre.fetchUrl)
+      .then((res) => {
+        let recommendationsArr = res.data.tracks.map((item) => {
+          return {
+            id: item.id,
+            uri: item.uri,
+            title: item.name,
+            artistIDs: item.artists.map((artist) => {
+              return artist.id;
+            }),
+            artistNames: item.artists.map((artist) => {
+              return artist.name;
+            }),
+            coverUrl: item.album.images[0].url,
+          };
+        });
+        setData(recommendationsArr);
       })
       .catch((err) => {
         console.log(err);

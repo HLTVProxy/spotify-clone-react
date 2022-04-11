@@ -28,6 +28,7 @@ import ResultArtists from './components/pages/Results/Artists';
 import Genre from './components/pages/Genre';
 import Track from './components/pages/Track';
 import { PlayerProvider } from './contexts/PlayerContext';
+import { SeedProvider } from './contexts/TrackSeedContext';
 
 function App() {
   // Spotify token
@@ -88,47 +89,52 @@ function App() {
   ) : (
     <Layout className="App">
       <PlayerProvider>
-        <Router>
-          <Header menu={Menu} />
-          <Layout>
-            <Sider menu={Menu} />
+        <SeedProvider>
+          <Router>
+            <Header menu={Menu} />
             <Layout>
-              <StyledContent>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/search" element={<Search />} />
-                  <Route path="/search/:searchText" element={<Search />} />
-                  <Route
-                    path="/search/:searchText/tracks"
-                    element={<ResultTracks />}
-                  />
-                  <Route
-                    path="/search/:searchText/artists"
-                    element={<ResultArtists />}
-                  />
-                  <Route path="/playlist/:id" element={<PlayList />} />
-                  <Route path="/user" element={<User />} />
-                  <Route path="/artist/:id" element={<Artist />} />
-                  <Route path="/album/:id" element={<Album />} />
-                  <Route path="/genre/:id" element={<Genre />} />
-                  <Route path="/track/:id" element={<Track />} />
-                  <Route
-                    path="/collection"
-                    element={<Navigate to="/collection/playlists" replace />}
-                  />
-                  <Route path="/collection/playlists" element={<PlayLists />} />
-                  <Route
-                    path="/collection/playlists/:id"
-                    element={<PlayList />}
-                  />
-                  <Route path="/collection/artists" element={<Artists />} />
-                  <Route path="/collection/albums" element={<Albums />} />
-                </Routes>
-              </StyledContent>
+              <Sider menu={Menu} />
+              <Layout>
+                <StyledContent>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/search" element={<Search />} />
+                    <Route path="/search/:searchText" element={<Search />} />
+                    <Route
+                      path="/search/:searchText/tracks"
+                      element={<ResultTracks />}
+                    />
+                    <Route
+                      path="/search/:searchText/artists"
+                      element={<ResultArtists />}
+                    />
+                    <Route path="/playlist/:id" element={<PlayList />} />
+                    <Route path="/user" element={<User />} />
+                    <Route path="/artist/:id" element={<Artist />} />
+                    <Route path="/album/:id" element={<Album />} />
+                    <Route path="/genre/:id" element={<Genre />} />
+                    <Route path="/track/:id" element={<Track />} />
+                    <Route
+                      path="/collection"
+                      element={<Navigate to="/collection/playlists" replace />}
+                    />
+                    <Route
+                      path="/collection/playlists"
+                      element={<PlayLists />}
+                    />
+                    <Route
+                      path="/collection/playlists/:id"
+                      element={<PlayList />}
+                    />
+                    <Route path="/collection/artists" element={<Artists />} />
+                    <Route path="/collection/albums" element={<Albums />} />
+                  </Routes>
+                </StyledContent>
+              </Layout>
             </Layout>
-          </Layout>
-        </Router>
-        <Player token={token} />
+          </Router>
+          <Player token={token} />
+        </SeedProvider>
       </PlayerProvider>
     </Layout>
   );
