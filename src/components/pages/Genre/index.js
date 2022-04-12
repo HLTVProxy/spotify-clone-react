@@ -8,12 +8,12 @@ function Genre() {
   let params = useParams();
   const { seed } = useContext(SeedContext);
   let tracksSeed = [];
-      seed.forEach((item, idx) => {
-      if (idx < 5) {
-        tracksSeed.push(item.id);
-      }
-    });
-  
+  seed.forEach((item, idx) => {
+    if (idx < 5) {
+      tracksSeed.push(item.id);
+    }
+  });
+
   let defaultArr = [
     {
       id: 'recent-play',
@@ -28,39 +28,46 @@ function Genre() {
     {
       id: 'recommendations',
       name: '猜你喜歡',
-      fetchUrl: `recommendations?limit=50&seed_tracks=${tracksSeed.join('%2C')}`,
+      fetchUrl: `recommendations?limit=50&seed_tracks=${tracksSeed.join(
+        '%2C'
+      )}`,
     },
   ];
 
-  let currentGenre = {};
+  let defaultGenre = {};
   defaultArr.forEach((item) => {
     if (item.id === params.id) {
-      currentGenre = item;
+      defaultGenre = item;
     }
   });
 
   const [data, setData] = useState([]);
+  const [genreName, setGenreName] = useState('');
 
   useEffect(() => {
-    switch (params.id) {
-      case 'recent-play':
-        fetchRecentlyPlayedTracks();
-        break;
-      case 'official-playlists':
-        fetchOfficialPlaylists();
-        break;
-      case 'recommendations':
-        fetchRecommendations();
-        break;
-      default:
-        break;
+    const fetchData = async () => {
+      switch (params.id) {
+        case 'recent-play':
+          await fetchRecentlyPlayedTracks();
+          break;
+        case 'official-playlists':
+          await fetchOfficialPlaylists();
+          break;
+        case 'recommendations':
+          await fetchRecommendations();
+          break;
+        default:
+          await fetchGenrePlaylists(params.id);
+          await fetchGenreName(params.id);
+          break;
+      }
     }
-    
+    fetchData();
   }, []);
 
   const fetchRecentlyPlayedTracks = () => {
     return apiClient
-      .get(currentGenre.fetchUrl)
+      .get(defaultGenre.fetchUrl)
       .then((res) => {
         let recentlyPlayedTracksArr = res.data.items.map((item) => {
           return {
@@ -73,7 +80,7 @@ function Genre() {
             artistNames: item.track.artists.map((artist) => {
               return artist.name;
             }),
-            coverUrl: item.track.album.images[0].url,
+            coverUrl: item.track.album.images[0]?.url,
           };
         });
         setData(recentlyPlayedTracksArr);
@@ -85,7 +92,7 @@ function Genre() {
 
   const fetchOfficialPlaylists = () => {
     return apiClient
-      .get(currentGenre.fetchUrl)
+      .get(defaultGenre.fetchUrl)
       .then((res) => {
         let officialPlaylistsArr = res.data.playlists.items.map((item) => {
           return {
@@ -93,7 +100,7 @@ function Genre() {
             uri: item.uri,
             title: item.name,
             descriptions: item.description,
-            coverUrl: item.images[0].url,
+            coverUrl: item.images[0]?.url,
           };
         });
         setData(officialPlaylistsArr);
@@ -105,7 +112,7 @@ function Genre() {
 
   const fetchRecommendations = () => {
     return apiClient
-      .get(currentGenre.fetchUrl)
+      .get(defaultGenre.fetchUrl)
       .then((res) => {
         let recommendationsArr = res.data.tracks.map((item) => {
           return {
@@ -118,7 +125,7 @@ function Genre() {
             artistNames: item.artists.map((artist) => {
               return artist.name;
             }),
-            coverUrl: item.album.images[0].url,
+            coverUrl: item.album.images[0]?.url,
           };
         });
         setData(recommendationsArr);
@@ -128,10 +135,49 @@ function Genre() {
       });
   };
 
+  const fetchGenrePlaylists = (genre) => {
+    return apiClient
+      .get(`browse/categories/${genre}/playlists?country=TW&limit=50`)
+      .then((res) => {
+        let genrePlaylists = res.data.playlists.items.map((playlist) => {
+          return {
+            id: playlist.id,
+            uri: playlist.uri,
+            title: playlist.name,
+            descriptions: playlist.description,
+            coverUrl: playlist.images[0]?.url,
+          };
+        });
+        setData(genrePlaylists);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const fetchGenreName = (genre) => {
+    return apiClient
+      .get(`browse/categories/${genre}?country=TW&locale=zh_TW`)
+      .then((res) => {
+        setGenreName(res.data.name);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       {data && (
-        <CardList type={params.id === 'official-playlists' ? 'playlists' : 'tracks'} title={currentGenre.name} detail={false}>
+        <CardList
+          type={
+            ['recent-play', 'recommendations'].includes(params.id)
+              ? 'tracks'
+              : 'playlists'
+          }
+          title={genreName !== '' ? genreName : defaultGenre.name}
+          detail={false}
+        >
           {data}
         </CardList>
       )}

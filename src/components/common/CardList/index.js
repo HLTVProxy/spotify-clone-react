@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Row, Col, Card } from 'antd';
 import styled from 'styled-components';
 import PlayerContext from '../../../contexts/PlayerContext';
+import UnknownArtist from '../../../img/UnknownArtist.png';
 const { Meta } = Card;
 
 function CardList({
@@ -14,6 +15,7 @@ function CardList({
   children,
 }) {
   let navigate = useNavigate();
+
   const handleClick = (type, id) => {
     switch (type) {
       case 'playlist':
@@ -37,7 +39,7 @@ function CardList({
     }
   };
 
-  const borderRadiusType = ['artist', 'fans', 'follow'];
+  const borderRadiusType = ['artists', 'fans', 'follow'];
   const noPlayButtonType = ['fans', 'follow'];
 
   const { playTrack } = useContext(PlayerContext);
@@ -51,13 +53,19 @@ function CardList({
           style={{ width: '100%', padding: 16 }}
           cover={
             <>
-              <img
-                style={{
-                  borderRadius: borderRadiusType.includes(type) ? '50%' : '',
-                }}
-                alt="cover image"
-                src={item.coverUrl}
-              />
+              <div className="cover-img-outer">
+                <div className="image-container">
+                  <div
+                    className="cover-img"
+                    style={{
+                      backgroundImage: item.coverUrl !== undefined ? `url(${item.coverUrl})` : `url(${UnknownArtist})`,
+                      borderRadius: borderRadiusType.includes(type)
+                        ? '50%'
+                        : '',
+                    }}
+                  ></div>
+                </div>
+              </div>
             </>
           }
           onClick={(e) => {
@@ -85,7 +93,9 @@ function CardList({
                 <div className="artist-links">
                   {item.artistIDs.map((artistID, idx) => {
                     return (
-                      <Link to={`/artist/${artistID}`}>{item.artistNames[idx]}</Link>
+                      <Link to={`/artist/${artistID}`}>
+                        {item.artistNames[idx]}
+                      </Link>
                     );
                   })}
                 </div>
@@ -104,7 +114,11 @@ function CardList({
       <Row>
         <StyledCol span={24}>
           <h1>{title}</h1>
-          {detail === true ? <Link to={detailHref}>{detailText}</Link> : ''}
+          {detail === true && children?.length === 8 ? (
+            <Link to={detailHref}>{detailText}</Link>
+          ) : (
+            ''
+          )}
         </StyledCol>
       </Row>
       <Row gutter={[16, 16]}>{dataArray}</Row>
@@ -146,6 +160,37 @@ const StyledCard = styled(Card)`
 
   .ant-card-body {
     padding: 16px 0;
+  }
+
+  .cover-img-outer {
+    position: relative;
+    max-width: 200px;
+    .image-container {
+      width: 100%;
+      &:before {
+        content: '';
+        display: block;
+        width: 100%;
+        padding-top: 100%;
+      }
+      .cover-img {
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #333;
+        color: #b3b3b3;
+      }
+    }
+  }
+
+  .ant-card-cover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .ant-card-meta-title,
@@ -194,7 +239,6 @@ const PlayButton = styled.button`
   position: absolute;
   top: 50%;
   right: 0%;
-  right: 0;
   z-index: 3;
   transition: 0.5s ease;
 

@@ -1,100 +1,130 @@
-import React from 'react';
+import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { Table, Button, Col } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import PlayerContext from '../../../contexts/PlayerContext';
 
-let data = [
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-  {
-    key: '1',
-    index: '1',
-    cover: 'https://i.scdn.co/image/ab67616d00001e02682cc3e8b1516cdad36f80dc',
-    title: '奔赴',
-    album: '奔赴',
-    addDate: '2022-03-29',
-    duration: '3:28',
-  },
-];
+function SongList({ title = '', detail = true, type = '', children }) {
+  const { playTrack } = useContext(PlayerContext);
 
-const columns = [
-  {
-    title: '#',
-    dataIndex: 'index',
-    key: 'index',
-    width: '1%',
-    render: (order) => (
-      <>
-        <OrderNum className="order">
-          <span className="order-num">{order}</span>
-          <PlayButton icon={<CaretRightOutlined />} size="large" />
-        </OrderNum>
-      </>
-    ),
-  },
-  {
-    title: '',
-    dataIndex: 'cover',
-    key: 'cover',
-    width: '3%',
-    render: (src) => <img src={src} style={{ width: 50 }} />,
-  },
-  {
-    title: '標題',
-    dataIndex: 'title',
-    key: 'title',
-    width: '30%',
-    render: (title) => <StyledLink type="title">{title}</StyledLink>,
-  },
-  {
-    title: '專輯',
-    dataIndex: 'album',
-    key: 'album',
-    width: '30%',
-    render: (album) => <StyledLink type="album">{album}</StyledLink>,
-  },
-  // {
-  //   title: '已新增日期',
-  //   dataIndex: 'addDate',
-  //   key: 'addDate',
-  //   width: '30%',
-  //   responsive: ['sm'],
-  // },
-  {
-    title: '時長',
-    dataIndex: 'duration',
-    key: 'duration',
-    width: '6%',
-    responsive: ['sm'],
-  },
-];
+  const msToMinutesAndSeconds = (ms) => {
+    let minutes = Math.floor(ms / 60000);
+    let seconds = ((ms % 60000) / 1000).toFixed(0);
+    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+  }
 
-function SongList({ title = '', detail = true, type = '' }) {
+  const columns = [
+    {
+      title: '#',
+      dataIndex: 'index',
+      key: 'index',
+      width: '1%',
+      render: (index) => {
+        let indexObject = JSON.parse(index);
+        return (
+          <>
+            <OrderNum className="order">
+              <span className="order-num">{indexObject.index}</span>
+              <PlayButton
+                icon={<CaretRightOutlined />}
+                size="large"
+                onClick={() => playTrack(indexObject.uri)}
+              />
+            </OrderNum>
+          </>
+        );
+      },
+    },
+    {
+      title: '',
+      dataIndex: 'coverUrl',
+      key: 'coverUrl',
+      width: '3%',
+      render: (src) => <img src={src} style={{ width: 50 }} />,
+    },
+    {
+      title: '標題',
+      dataIndex: 'track',
+      key: 'track',
+      width: '30%',
+      render: (track) => {
+        let trackObject = JSON.parse(track);
+        return (
+          <>
+            <p className="track-name">
+              <Link to={`/track/${trackObject.id}`}>{trackObject.name}</Link>
+            </p>
+            <p className="track-artists">
+              {trackObject.artists.ids.map((id, idx) => {
+                return (
+                  <Link to={`/track/${id}`}>
+                    {trackObject.artists.names[idx]}
+                  </Link>
+                );
+              })}
+            </p>
+          </>
+        );
+      },
+    },
+    {
+      title: '專輯',
+      dataIndex: 'album',
+      key: 'album',
+      width: '30%',
+      render: (album) => {
+        let albumObject = JSON.parse(album);
+        return (
+          <p className="track-album">
+            <Link to={`/album/${albumObject.id}`}>{albumObject.name}</Link>
+          </p>
+        );
+      },
+    },
+    // {
+    //   title: '已新增日期',
+    //   dataIndex: 'addDate',
+    //   key: 'addDate',
+    //   width: '30%',
+    //   responsive: ['sm'],
+    // },
+    {
+      title: '時長',
+      dataIndex: 'duration',
+      key: 'duration',
+      width: '6%',
+      responsive: ['sm'],
+    },
+  ];
+
+  const tracks = children.map((track) => {
+    const indexObject = {
+      index: track.index,
+      uri: track.uri,
+    };
+    const trackObject = {
+      id: track.id,
+      name: track.name,
+      artists: {
+        ids: track.artistsIDs,
+        names: track.artistsNames,
+      },
+    };
+    const albumObject = {
+      id: track.albumID,
+      name: track.albumName,
+    };
+    return {
+      index: JSON.stringify(indexObject),
+      key: track.id,
+      track: JSON.stringify(trackObject),
+      album: JSON.stringify(albumObject),
+      coverUrl: track.coverUrl,
+      duration: msToMinutesAndSeconds(track.duration),
+    };
+  });
+  
   return (
     <StyledDiv>
       {title !== '' ? (
@@ -105,12 +135,14 @@ function SongList({ title = '', detail = true, type = '' }) {
       ) : (
         ''
       )}
-      <StyledTable
-        titleName={title}
-        columns={columns}
-        dataSource={data}
-        pagination={false}
-      ></StyledTable>
+      {children && (
+        <StyledTable
+          titleName={title}
+          columns={columns}
+          dataSource={tracks}
+          pagination={false}
+        />
+      )}
       {type === 'album' ? (
         <CopyRight>
           <p className="OP">
@@ -142,22 +174,18 @@ const StyledCol = styled(Col)`
   div {
     cursor: pointer;
   }
-  a {
-    color: #b3b3b3;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 `;
 
 const StyledTable = styled(Table)`
   padding-top: ${(props) => (props.titleName != null ? '8px' : '64px')};
+
   .ant-table table,
   .ant-table-thead > tr > th {
     background-color: #121212;
     color: #fff;
     border-radius: 0;
   }
+
   .ant-table-tbody > tr > td.ant-table-cell-row-hover {
     background-color: rgba(255, 255, 255, 0.1);
     .order {
@@ -169,6 +197,31 @@ const StyledTable = styled(Table)`
       }
     }
   }
+
+  .ant-table-cell p {
+    margin: 0;
+  }
+
+  .track-name a {
+    color: #fff;
+  }
+
+  .track-artists a,
+  .track-album a {
+    color: #b3b3b3;
+  }
+
+  .ant-table-cell a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+  .track-artists a:not(:first-of-type)::before {
+    content: ',';
+    color: #b3b3b3;
+    text-decoration: none;
+  }
+
   @media (max-width: 576px) {
     padding-top: 16px;
   }
@@ -187,14 +240,6 @@ const CopyRight = styled.div`
   .SP {
     display: flex;
     align-items: center;
-  }
-`;
-
-const StyledLink = styled.a`
-  color: ${(props) => (props.type === 'title' ? '#fff' : '#b3b3b3')};
-  &:hover {
-    color: #fff;
-    text-decoration: underline;
   }
 `;
 
