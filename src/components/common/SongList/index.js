@@ -4,19 +4,22 @@ import { Table, Button, Col } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import PlayerContext from '../../../contexts/PlayerContext';
+import { msSongListFormat } from '../../../helper';
 
-function SongList({ title = '', detail = true, type = '', children }) {
+function SongList({
+  title = '',
+  detail = true,
+  type = '',
+  copyright = false,
+  children,
+}) {
   const { playTrack } = useContext(PlayerContext);
-
-  const msToMinutesAndSeconds = (ms) => {
-    let minutes = Math.floor(ms / 60000);
-    let seconds = ((ms % 60000) / 1000).toFixed(0);
-    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-  }
 
   const columns = [
     {
-      title: '#',
+      title: () => {
+        return <div className="order-title">#</div>;
+      },
       dataIndex: 'index',
       key: 'index',
       width: '1%',
@@ -90,11 +93,29 @@ function SongList({ title = '', detail = true, type = '', children }) {
     //   responsive: ['sm'],
     // },
     {
-      title: '時長',
+      title: () => {
+        return (
+          <div className="duration">
+            <svg
+              role="img"
+              height="16"
+              width="16"
+              viewBox="0 0 16 16"
+              fill="white"
+            >
+              <path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8z"></path>
+              <path d="M8 3.25a.75.75 0 01.75.75v3.25H11a.75.75 0 010 1.5H7.25V4A.75.75 0 018 3.25z"></path>
+            </svg>
+          </div>
+        );
+      },
       dataIndex: 'duration',
       key: 'duration',
       width: '6%',
       responsive: ['sm'],
+      render: (duration) => {
+        return <div className="duration-td">{duration}</div>;
+      },
     },
   ];
 
@@ -121,10 +142,10 @@ function SongList({ title = '', detail = true, type = '', children }) {
       track: JSON.stringify(trackObject),
       album: JSON.stringify(albumObject),
       coverUrl: track.coverUrl,
-      duration: msToMinutesAndSeconds(track.duration),
+      duration: msSongListFormat(track.duration),
     };
   });
-  
+
   return (
     <StyledDiv>
       {title !== '' ? (
@@ -143,7 +164,7 @@ function SongList({ title = '', detail = true, type = '', children }) {
           pagination={false}
         />
       )}
-      {type === 'album' ? (
+      {copyright === true ? (
         <CopyRight>
           <p className="OP">
             <span>©</span>2022 大象音乐
@@ -186,6 +207,13 @@ const StyledTable = styled(Table)`
     border-radius: 0;
   }
 
+  .order-title,
+  .duration {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .ant-table-tbody > tr > td.ant-table-cell-row-hover {
     background-color: rgba(255, 255, 255, 0.1);
     .order {
@@ -220,6 +248,11 @@ const StyledTable = styled(Table)`
     content: ',';
     color: #b3b3b3;
     text-decoration: none;
+  }
+
+  .duration-td {
+    display: flex;
+    justify-content: center;
   }
 
   @media (max-width: 576px) {

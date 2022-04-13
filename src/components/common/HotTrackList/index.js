@@ -1,63 +1,52 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { List, Button } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import { msSongListFormat } from '../../../helper';
+import PlayerContext from '../../../contexts/PlayerContext';
 
-function HotTrackList({title = '熱門', type = 'artist'}) {
-  const data = [
-    {
-      title: '飛鳥和蟬',
-    },
-    {
-      title: '飛鳥和蟬',
-    },
-    {
-      title: '飛鳥和蟬',
-    },
-    {
-      title: '飛鳥和蟬',
-    },
-    {
-      title: '飛鳥和蟬',
-    },
-    {
-      title: '飛鳥和蟬',
-    },
-    {
-      title: '飛鳥和蟬',
-    },
-    {
-      title: '飛鳥和蟬',
-    },
-    {
-      title: '飛鳥和蟬',
-    },
-    {
-      title: '飛鳥和蟬',
-    },
-  ];
-
+function HotTrackList({ title = '熱門', type = 'artist', children }) {
   const [collapse, setCollapse] = useState(false);
+  const { playTrack } = useContext(PlayerContext);
+
+  const handlePlay = (uri) => {
+    playTrack(uri);
+  };
 
   return (
     <StyledDiv collapse={collapse}>
-      {type === 'track' ? <span className="artist-hot-track-text">此藝人的熱門曲目：</span> : ''}
+      {type === 'track' ? (
+        <span className="artist-hot-track-text">此藝人的熱門曲目：</span>
+      ) : (
+        ''
+      )}
       <h1>{title}</h1>
       <List
         itemLayout="horizontal"
         size="small"
-        dataSource={data}
+        dataSource={children}
         renderItem={(item, idx) => (
           <List.Item className={idx > 4 ? 'collapse-item' : ''}>
             <Rank className="rank">
               <span className="rank-num">{idx + 1}</span>
-              <PlayButton icon={<CaretRightOutlined />} size="large" />
+              <PlayButton
+                icon={<CaretRightOutlined />}
+                size="large"
+                onClick={() => handlePlay(item.uri)}
+              />
             </Rank>
             <div className="cover">
-              <img src="https://i.scdn.co/image/ab67616d00001e02dfb13a39f0976b75efd6bf84" />
+              <img src={item.album.images[0]?.url} />
             </div>
-            <List.Item.Meta title={<a href="#!">{item.title}</a>} />
-            <div className="song-info">123</div>
+            <List.Item.Meta
+              title={<Link to={`/track/${item.id}`}>{item.name}</Link>}
+            />
+            <div className="song-info">
+              <span className="duration">
+                {msSongListFormat(item.duration_ms)}
+              </span>
+            </div>
           </List.Item>
         )}
       />
@@ -75,7 +64,7 @@ function HotTrackList({title = '熱門', type = 'artist'}) {
 export default HotTrackList;
 
 const StyledDiv = styled.div`
-  padding-top: 16px;
+  padding: 16px 0;
 
   .artist-hot-track-text {
     color: #b3b3b3;
@@ -98,6 +87,8 @@ const StyledDiv = styled.div`
   }
 
   .ant-list-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
     .rank-num {
       display: none;
     }

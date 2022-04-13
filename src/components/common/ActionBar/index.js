@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Dropdown, Menu } from 'antd';
+import PlayerContext from '../../../contexts/PlayerContext';
 
-function ActionBar({ type = 'album' }) {
+function ActionBar({ type = 'album', children }) {
+  const { playTrack } = useContext(PlayerContext);
+
   const menu = (
     <StyledMenu>
       <Menu.Item key="add-to-queue">新增至佇列</Menu.Item>
@@ -13,7 +16,7 @@ function ActionBar({ type = 'album' }) {
   );
 
   const handlePlayClick = () => {
-    alert('播放');
+    playTrack(children.uri);
   };
 
   const [isArtistFollow, setIsArtistFollow] = useState(false);

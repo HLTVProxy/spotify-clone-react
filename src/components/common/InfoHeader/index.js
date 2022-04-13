@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const infoTitle = (type) => {
   switch (type) {
@@ -16,26 +17,58 @@ const infoTitle = (type) => {
   }
 };
 
-function InfoHeader({ type = 'playlist', description = true, detail = false }) {
+function InfoHeader({
+  type = 'playlist',
+  description = true,
+  detail = false,
+  children,
+}) {
   return (
     <Info type={type} description={description} detail={detail}>
       <div className="info-left">
-        <img src="https://lineup-images.scdn.co/wrapped-2021-top100_LARGE-zh-Hant.jpg" />
+        <img src={children.coverUrl} alt="Playlist cover" />
       </div>
       <div className="info-right">
         <h2>{infoTitle(type)}</h2>
         <span>
-          <h1>2021 年你的最愛歌曲</h1>
+          <h1>{children.title}</h1>
         </span>
-        <p className="info-description">
-          Spotify 年度總回顧為你呈現你今年最愛的歌曲
-        </p>
+        <p className="info-description">{children.description}</p>
         <div className="info-detail">
-          <div className="artist">Spotify</div>
+          {children.artists && (
+            <div className="artist">
+              {children.artists.map((artist) => (
+                <Link key={artist.id} to={`/artist/${artist.id}`}>
+                  {artist.name}
+                </Link>
+              ))}
+            </div>
+          )}
+          {children.releaseDate && (
+            <div className="release-year">{children.releaseDate[0]}</div>
+          )}
+          {children.owner && <div className="owner">{children.owner}</div>}
+          {type === 'artist' ? (
+            <span className="listener">{`每月 ${children.followers} 名聽眾`}</span>
+          ) : (
+            ''
+          )}
           <div className="total-songs-and-duration">
-            <span>
-              100 首歌, <span>6 小時 17 分</span>
-            </span>
+            {children.trackCount && (
+              <span className="track-count">{children.trackCount} 首歌</span>
+            )}
+            {children.followers && type !== 'artist' ? (
+              <span className="like-count">{`${
+                children.followers !== undefined
+                  ? `${children.followers} 人按讚`
+                  : ''
+              }`}</span>
+            ) : (
+              ''
+            )}
+            {children.duration && (
+              <span className="duration">{children.duration}</span>
+            )}
           </div>
         </div>
         <div className="user-public-status">
@@ -90,11 +123,20 @@ const Info = styled.div`
     display: ${(props) => (props.detail ? 'flex' : 'none')};
   }
 
+  .info-detail .artist a {
+    color: #fff;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   .user-public-status {
     display: ${(props) => (props.type === 'user' ? 'flex' : 'none')};
   }
-
-  .total-songs-and-duration::before,
+  .release-year::before,
+  .track-count::before,
+  .like-count::before,
+  .duration::before,
   .fans-count::before,
   .follow-count::before {
     content: '•';

@@ -18,16 +18,16 @@ function CardList({
 
   const handleClick = (type, id) => {
     switch (type) {
-      case 'playlist':
-        navigate(`/collection/playlists/${id}`);
-        break;
+      case 'collectionPlaylist':
       case 'playlists':
         navigate(`/playlist/${id}`);
         break;
-      case 'artist':
+      case 'artists':
         navigate(`/artist/${id}`);
         break;
+      case 'artist-albums':
       case 'albums':
+      case 'singles':
         navigate(`/album/${id}`);
         break;
       case 'tracks':
@@ -58,7 +58,10 @@ function CardList({
                   <div
                     className="cover-img"
                     style={{
-                      backgroundImage: item.coverUrl !== undefined ? `url(${item.coverUrl})` : `url(${UnknownArtist})`,
+                      backgroundImage:
+                        item.coverUrl !== undefined
+                          ? `url(${item.coverUrl})`
+                          : `url(${UnknownArtist})`,
                       borderRadius: borderRadiusType.includes(type)
                         ? '50%'
                         : '',
@@ -85,11 +88,10 @@ function CardList({
               </svg>
             </PlayButton>
           )}
-
           <Meta
             title={item.title}
             description={
-              type === 'tracks' ? (
+              ['tracks', 'albums'].includes(type) ? (
                 <div className="artist-links">
                   {item.artistIDs.map((artistID, idx) => {
                     return (
@@ -159,7 +161,7 @@ const StyledCard = styled(Card)`
   }
 
   .ant-card-body {
-    padding: 16px 0;
+    padding: 16px 0 0 0;
   }
 
   .cover-img-outer {
@@ -191,6 +193,10 @@ const StyledCard = styled(Card)`
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .ant-card-meta-detail {
+    min-height: 72px;
   }
 
   .ant-card-meta-title,
