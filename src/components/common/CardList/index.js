@@ -52,28 +52,26 @@ function CardList({
           hoverable
           style={{ width: '100%', padding: 16 }}
           cover={
-            <>
-              <div className="cover-img-outer">
-                <div className="image-container">
-                  <div
-                    className="cover-img"
-                    style={{
-                      backgroundImage:
-                        item.coverUrl !== undefined
-                          ? `url(${item.coverUrl})`
-                          : `url(${UnknownArtist})`,
-                      borderRadius: borderRadiusType.includes(type)
-                        ? '50%'
-                        : '',
-                    }}
-                  ></div>
-                </div>
+            <div className="cover-img-outer">
+              <div className="image-container">
+                <div
+                  className="cover-img"
+                  style={{
+                    backgroundImage:
+                      item.coverUrl !== undefined
+                        ? `url(${item.coverUrl})`
+                        : `url(${UnknownArtist})`,
+                    borderRadius: borderRadiusType.includes(type) ? '50%' : '',
+                  }}
+                ></div>
               </div>
-            </>
+            </div>
           }
           onClick={(e) => {
             if (e.target.tagName === 'IMG' || e.target.tagName === 'DIV') {
               handleClick(type, item.id);
+            } else if (e.target.tagName === 'A') {
+              return;
             } else {
               playTrack(item.uri);
             }
