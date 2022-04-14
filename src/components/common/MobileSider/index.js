@@ -13,7 +13,7 @@ export default function MobileSider({
 
   useEffect(() => {
     fetchCollectionPlaylists();
-  }, [savedPlaylists]);
+  }, []);
 
   const fetchCollectionPlaylists = () => {
     apiClient
@@ -36,8 +36,7 @@ export default function MobileSider({
     return (
       <Menu.Item
         className="menu-selected-color"
-        onClick={
-          changeSelectedKey}
+        onClick={changeSelectedKey}
         key={topic.key}
       >
         <Link to={`${topic.path}`}>{topic.name}</Link>
@@ -50,8 +49,7 @@ export default function MobileSider({
     return (
       <Menu.Item
         className={`playlist-item ${idx === 0 ? 'first-playlist-item' : ''}`}
-        onClick={
-          changeSelectedKey}
+        onClick={changeSelectedKey}
         key={playlist.id}
       >
         <Link to={`playlist/${playlist.id}`}>{playlist.name}</Link>
