@@ -27,6 +27,7 @@ function CardList({
         break;
       case 'artist-albums':
       case 'albums':
+      case 'album':
       case 'singles':
         navigate(`/album/${id}`);
         break;
@@ -47,7 +48,7 @@ function CardList({
   // Render card
   let dataArray = children?.map((item) => {
     return (
-      <Col xs={12} md={8} lg={8} xl={4} xxl={3}>
+      <Col xs={12} md={8} lg={8} xl={4} xxl={3} key={item.id}>
         <StyledCard
           hoverable
           style={{ width: '100%', padding: 16 }}
@@ -93,7 +94,7 @@ function CardList({
                 <div className="artist-links">
                   {item.artistIDs.map((artistID, idx) => {
                     return (
-                      <Link to={`/artist/${artistID}`}>
+                      <Link key={artistID} to={`/artist/${artistID}`}>
                         {item.artistNames[idx]}
                       </Link>
                     );
@@ -111,17 +112,23 @@ function CardList({
 
   return (
     <>
-      <Row>
-        <StyledCol span={24}>
-          <h1>{title}</h1>
-          {detail === true && children?.length === 8 ? (
-            <Link to={detailHref}>{detailText}</Link>
-          ) : (
-            ''
-          )}
-        </StyledCol>
-      </Row>
-      <Row gutter={[16, 16]}>{dataArray}</Row>
+      {dataArray?.length > 0 ? (
+        <>
+          <Row>
+            <StyledCol span={24}>
+              <h1>{title}</h1>
+              {detail === true && children?.length === 8 ? (
+                <Link to={detailHref}>{detailText}</Link>
+              ) : (
+                ''
+              )}
+            </StyledCol>
+          </Row>
+          <Row gutter={[16, 16]}>{dataArray}</Row>
+        </>
+      ) : (
+        ''
+      )}
     </>
   );
 }

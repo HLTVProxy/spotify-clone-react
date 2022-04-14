@@ -6,7 +6,7 @@ import { Row, Col } from 'antd';
 function GenreList({ children }) {
   let dataArr = children.map((genre) => {
     return (
-      <StyledCol xs={12} md={8} lg={8} xl={4} xxl={3} span={24}>
+      <StyledCol xs={12} md={8} lg={8} xl={4} xxl={3} span={24} key={genre.name}>
         <Link to={`/genre/${genre.id}`}>
           <img src={genre.img} alt="genre image"/>
           <h3>{genre.name}</h3>

@@ -55,16 +55,14 @@ function InfoHeader({
         <p className="info-description">{children.description}</p>
         <div className="info-detail">
           {children.artists && (
-            <div className="artist">
+            <div className="artists">
               {children.artists.map((artist, idx, artists) => (
-                <>
+                <div key={artist.id}>
                   <span>
-                    <Link key={artist.id} to={`/artist/${artist.id}`}>
-                      {artist.name}
-                    </Link>
+                    <Link to={`/artist/${artist.id}`}>{artist.name}</Link>
                     {idx !== artists.length - 1 ? '・' : ''}
                   </span>
-                </>
+                </div>
               ))}
             </div>
           )}
@@ -175,7 +173,11 @@ const Info = styled.div`
     display: ${(props) => (props.detail ? 'flex' : 'none')};
   }
 
-  .info-detail .artist a {
+  .info-detail .artists {
+    display: flex;
+  }
+
+  .info-detail .artists a {
     color: #fff;
     &:hover {
       text-decoration: underline;

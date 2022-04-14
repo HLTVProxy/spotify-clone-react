@@ -105,7 +105,7 @@ function Artist() {
           uri: artist.uri,
           title: artist.name,
           descriptions: '藝人',
-          coverUrl: artist.images[0].url,
+          coverUrl: artist.images[0]?.url,
         };
       });
 
