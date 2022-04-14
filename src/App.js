@@ -59,7 +59,12 @@ function App() {
   useEffect(() => {
     let pathName = window.location.pathname;
     let key = '';
-    if (!pathName.includes('/user')) {
+    if (pathName.includes('/user')) {
+      key = '';
+    } else if (pathName.includes('/playlist') && !pathName.includes('/collection/playlists')) {
+      let pathSplitArr = pathName.split('/');
+      key = pathSplitArr[2];
+    } else {
       let topicIndex = 0;
       topics.forEach((val, idx) => {
         if (pathName.includes(val.path)) {
