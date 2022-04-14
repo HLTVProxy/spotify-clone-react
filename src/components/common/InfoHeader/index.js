@@ -1,21 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
-const infoTitle = (type) => {
-  switch (type) {
-    case 'user':
-      return '個人檔案';
-    case 'artist':
-      return '';
-    case 'album':
-      return '專輯';
-    case 'track':
-      return '歌曲';
-    default:
-      return '播放清單';
-  }
-};
+import UnknownArtist from '../../../img/UnknownArtist.png';
 
 function InfoHeader({
   type = 'playlist',
@@ -23,10 +9,43 @@ function InfoHeader({
   detail = false,
   children,
 }) {
+  const infoTitle = (type) => {
+    switch (type) {
+      case 'user':
+        return '個人檔案';
+      case 'artist':
+        return '';
+      case 'album':
+        if (children.albumType === 'album') {
+          return '專輯';
+        } else if (children.trackCount > 1) {
+          return '迷你專輯';
+        } else {
+          return '單曲';
+        }
+      case 'track':
+        return '歌曲';
+      default:
+        return '播放清單';
+    }
+  };
   return (
     <Info type={type} description={description} detail={detail}>
       <div className="info-left">
-        <img src={children.coverUrl} alt="Playlist cover" />
+        <div className="cover-img-outer">
+          <div className="image-container">
+            <div
+              className="cover-img"
+              style={{
+                backgroundImage:
+                  children.coverUrl !== undefined
+                    ? `url(${children.coverUrl})`
+                    : `url(${UnknownArtist})`,
+                borderRadius: type === 'artist' ? '50%' : '',
+              }}
+            ></div>
+          </div>
+        </div>
       </div>
       <div className="info-right">
         <h2>{infoTitle(type)}</h2>
@@ -37,10 +56,15 @@ function InfoHeader({
         <div className="info-detail">
           {children.artists && (
             <div className="artist">
-              {children.artists.map((artist) => (
-                <Link key={artist.id} to={`/artist/${artist.id}`}>
-                  {artist.name}
-                </Link>
+              {children.artists.map((artist, idx, artists) => (
+                <>
+                  <span>
+                    <Link key={artist.id} to={`/artist/${artist.id}`}>
+                      {artist.name}
+                    </Link>
+                    {idx !== artists.length - 1 ? '・' : ''}
+                  </span>
+                </>
               ))}
             </div>
           )}
@@ -105,6 +129,34 @@ const Info = styled.div`
   img {
     width: 200px;
     border-radius: ${(props) => (props.type == 'artist' ? '50%' : '')};
+  }
+
+  .info-left {
+    width: 232px;
+    max-width: 232px;
+    .cover-img-outer {
+      position: relative;
+      .image-container {
+        width: 100%;
+        &:before {
+          content: '';
+          display: block;
+          width: 100%;
+          padding-top: 100%;
+        }
+        .cover-img {
+          background-repeat: no-repeat;
+          background-size: cover;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: #333;
+          color: #b3b3b3;
+        }
+      }
+    }
   }
 
   .info-right {

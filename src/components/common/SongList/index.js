@@ -10,7 +10,7 @@ function SongList({
   title = '',
   detail = true,
   type = '',
-  copyright = false,
+  copyright = [],
   children,
 }) {
   const { playTrack } = useContext(PlayerContext);
@@ -44,6 +44,7 @@ function SongList({
       dataIndex: 'coverUrl',
       key: 'coverUrl',
       width: '3%',
+      hidden: type === 'album' ? true : false,
       render: (src) => <img src={src} style={{ width: 50 }} />,
     },
     {
@@ -61,7 +62,7 @@ function SongList({
             <p className="track-artists">
               {trackObject.artists.ids.map((id, idx) => {
                 return (
-                  <Link to={`/track/${id}`}>
+                  <Link key={id} to={`/track/${id}`}>
                     {trackObject.artists.names[idx]}
                   </Link>
                 );
@@ -76,6 +77,7 @@ function SongList({
       dataIndex: 'album',
       key: 'album',
       width: '30%',
+      hidden: type === 'album' ? true : false,
       render: (album) => {
         let albumObject = JSON.parse(album);
         return (
@@ -117,7 +119,7 @@ function SongList({
         return <div className="duration-td">{duration}</div>;
       },
     },
-  ];
+  ].filter(item => !item.hidden);
 
   const tracks = children.map((track) => {
     const indexObject = {
@@ -164,18 +166,16 @@ function SongList({
           pagination={false}
         />
       )}
-      {copyright === true ? (
+      {copyright &&
         <CopyRight>
           <p className="OP">
-            <span>©</span>2022 大象音乐
+            <span>©</span>{copyright[0]}
           </p>
           <p className="SP">
-            <span style={{ fontSize: 16 }}>℗</span>2022 大象音乐
+            <span style={{ fontSize: 16 }}>℗</span>{copyright[1]}
           </p>
         </CopyRight>
-      ) : (
-        ''
-      )}
+      }
     </StyledDiv>
   );
 }
