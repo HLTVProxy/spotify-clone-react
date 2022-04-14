@@ -73,10 +73,9 @@ function Album() {
         };
       });
 
-      let albumCopyrightData = [
-        albumData.copyrights[0].text,
-        albumData.copyrights[1].text,
-      ];
+      let albumCopyrightData = albumData.copyrights.map((copyright) => {
+        return {type: copyright.type, text: copyright.text}
+      })
 
       let artistAlbumsData = artistAlbumsDataArr.map((album) => {
         return {
@@ -91,7 +90,7 @@ function Album() {
       setHeaderInfo(headerInfoData);
       setActionBarInfo(actionBarData);
       setAlbumTracks(albumTracksData);
-      setAlbumCopyright(albumCopyrightData);
+      setAlbumCopyright(JSON.stringify(albumCopyrightData));
       setArtist({
         id: albumData.artists[0].id,
         name: albumData.artists[0].name,

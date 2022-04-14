@@ -10,7 +10,7 @@ function SongList({
   title = '',
   detail = true,
   type = '',
-  copyright = [],
+  copyright,
   children,
 }) {
   const { playTrack } = useContext(PlayerContext);
@@ -62,7 +62,7 @@ function SongList({
             <p className="track-artists">
               {trackObject.artists.ids.map((id, idx) => {
                 return (
-                  <Link key={id} to={`/track/${id}`}>
+                  <Link key={id} to={`/artist/${id}`}>
                     {trackObject.artists.names[idx]}
                   </Link>
                 );
@@ -119,7 +119,7 @@ function SongList({
         return <div className="duration-td">{duration}</div>;
       },
     },
-  ].filter(item => !item.hidden);
+  ].filter((item) => !item.hidden);
 
   const tracks = children.map((track) => {
     const indexObject = {
@@ -166,16 +166,29 @@ function SongList({
           pagination={false}
         />
       )}
-      {copyright &&
+      {copyright?.length > 0 && (
         <CopyRight>
-          <p className="OP">
-            <span>©</span>{copyright[0]}
-          </p>
-          <p className="SP">
-            <span style={{ fontSize: 16 }}>℗</span>{copyright[1]}
-          </p>
+          {JSON.parse(copyright).map((copyright) => {
+            if (copyright.type === 'C') {
+              let splitCopyRightArr = copyright.text.split('(C) ');
+              return (
+                <p key="OP" className="OP">
+                  <span>©</span>
+                  {splitCopyRightArr.length > 1 ? splitCopyRightArr[1] : splitCopyRightArr[0]}
+                </p>
+              );
+            } else if (copyright.type === 'P') {
+              let splitCopyRightArr = copyright.text.split('(P) ');
+              return (
+                <p key="SP" className="SP">
+                  <span style={{ fontSize: 16 }}>℗</span>
+                  {splitCopyRightArr.length > 1 ? splitCopyRightArr[1] : splitCopyRightArr[0]}
+                </p>
+              );
+            }
+          })}
         </CopyRight>
-      }
+      )}
     </StyledDiv>
   );
 }
