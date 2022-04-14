@@ -62,7 +62,7 @@ function SongList({
             <p className="track-artists">
               {trackObject.artists.ids.map((id, idx) => {
                 return (
-                  <Link key={id} to={`/artist/${id}`}>
+                  <Link key={`${id}-link`} to={`/artist/${id}`}>
                     {trackObject.artists.names[idx]}
                   </Link>
                 );
@@ -152,8 +152,11 @@ function SongList({
     <StyledDiv>
       {title !== '' ? (
         <StyledCol span={24}>
-          <h1>{title}</h1>
-          {detail == true ? <a href="#!">查看全部</a> : ''}
+          <div className="title">
+            <h1>{title}</h1>
+            <p>僅自己可見</p>
+          </div>
+          {detail == true ? <Link to="#!">查看全部</Link> : ''}
         </StyledCol>
       ) : (
         ''
@@ -161,6 +164,7 @@ function SongList({
       {children && (
         <StyledTable
           titleName={title}
+          type={type}
           columns={columns}
           dataSource={tracks}
           pagination={false}
@@ -174,7 +178,9 @@ function SongList({
               return (
                 <p key="OP" className="OP">
                   <span>©</span>
-                  {splitCopyRightArr.length > 1 ? splitCopyRightArr[1] : splitCopyRightArr[0]}
+                  {splitCopyRightArr.length > 1
+                    ? splitCopyRightArr[1]
+                    : splitCopyRightArr[0]}
                 </p>
               );
             } else if (copyright.type === 'P') {
@@ -182,7 +188,9 @@ function SongList({
               return (
                 <p key="SP" className="SP">
                   <span style={{ fontSize: 16 }}>℗</span>
-                  {splitCopyRightArr.length > 1 ? splitCopyRightArr[1] : splitCopyRightArr[0]}
+                  {splitCopyRightArr.length > 1
+                    ? splitCopyRightArr[1]
+                    : splitCopyRightArr[0]}
                 </p>
               );
             }
@@ -204,14 +212,33 @@ const StyledDiv = styled.div`
 const StyledCol = styled(Col)`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  div {
-    cursor: pointer;
+  align-items: end;
+  padding-bottom: 16px;
+  h1 {
+    margin-bottom: 4px;
+  }
+  p {
+    font-size: 12px;
+    font-weight: 400;
+    color: #b3b3b3;
+    margin: 0;
+  }
+  a {
+    font-size: 12px;
+    font-weight: 700;
+    color: #b3b3b3;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `;
 
 const StyledTable = styled(Table)`
   padding-top: ${(props) => (props.titleName != null ? '8px' : '64px')};
+
+  .ant-table-thead {
+    display: ${(props) => (props.type === 'user' ? 'none' : '')};
+  }
 
   .ant-table table,
   .ant-table-thead > tr > th {

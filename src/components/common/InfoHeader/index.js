@@ -41,7 +41,7 @@ function InfoHeader({
                   children.coverUrl !== undefined
                     ? `url(${children.coverUrl})`
                     : `url(${UnknownArtist})`,
-                borderRadius: type === 'artist' ? '50%' : '',
+                borderRadius: ['artist', 'user'].includes(type) ? '50%' : '',
               }}
             ></div>
           </div>
@@ -130,9 +130,10 @@ const Info = styled.div`
   }
 
   .info-left {
-    width: 232px;
+    width: 30%;
     max-width: 232px;
     .cover-img-outer {
+      width: 100%;
       position: relative;
       .image-container {
         width: 100%;
@@ -198,6 +199,8 @@ const Info = styled.div`
   }
 
   @media (max-width: 576px) {
+    display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     .info-left,
     .info-right {
