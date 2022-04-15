@@ -22,6 +22,7 @@ function CardList({
       case 'playlists':
         navigate(`/playlist/${id}`);
         break;
+      case 'followingArtists':
       case 'artists':
         navigate(`/artist/${id}`);
         break;
@@ -40,7 +41,7 @@ function CardList({
     }
   };
 
-  const borderRadiusType = ['artists', 'fans', 'follow'];
+  const borderRadiusType = ['artists', 'fans', 'followingArtists'];
   const noPlayButtonType = ['fans', 'follow'];
 
   const { playTrack } = useContext(PlayerContext);

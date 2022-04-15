@@ -9,6 +9,7 @@ function User() {
   const [headerInfo, setHeaderInfo] = useState([]);
   const [userTopArtists, setUserTopArtists] = useState([]);
   const [userTopTracks, setUserTopTracks] = useState([]);
+  const [userFollowingArtists, setUserFollowingArtists] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,7 +24,6 @@ function User() {
       const userTopArtistsDataArr = await apiClient
         .get(`me/top/artists?limit=8&time_range=short_term`)
         .then((res) => {
-          console.log(res.data.items);
           return res.data.items;
         })
         .catch((err) => {
@@ -33,8 +33,16 @@ function User() {
       const userTopTracksDataArr = await apiClient
         .get(`me/top/tracks?limit=4&time_range=short_term`)
         .then((res) => {
-          console.log(res.data.items);
           return res.data.items;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      const userFollowingArtistsDataArr = await apiClient
+        .get(`me/following?type=artist&limit=8`)
+        .then((res) => {
+          return res.data.artists.items;
         })
         .catch((err) => {
           console.log(err);
@@ -69,6 +77,17 @@ function User() {
           duration: item.duration_ms,
         };
       });
+      let userFollowingArtistsData = userFollowingArtistsDataArr.map(
+        (artist) => {
+          return {
+            id: artist.id,
+            uri: artist.uri,
+            title: artist.name,
+            descriptions: '個人檔案',
+            coverUrl: artist.images[0]?.url,
+          };
+        }
+      );
 
       setUserData({
         id: userData.id,
@@ -77,6 +96,7 @@ function User() {
       setHeaderInfo(headerInfoData);
       setUserTopArtists(userTopArtistsData);
       setUserTopTracks(userTopTracksData);
+      setUserFollowingArtists(userFollowingArtistsData);
     };
 
     fetchData();
@@ -97,8 +117,9 @@ function User() {
       <SongList type="user" title="本月最熱門曲目">
         {userTopTracks}
       </SongList>
-      {/* <CardList title="粉絲" type="fans" /> */}
-      {/* <CardList title="正在關注" type="follow" /> */}
+      <CardList title="正在關注" type="followingArtists">
+        {userFollowingArtists}
+      </CardList>
     </>
   );
 }
