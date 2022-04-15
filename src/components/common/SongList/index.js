@@ -113,7 +113,7 @@ function SongList({
       },
       dataIndex: 'duration',
       key: 'duration',
-      width: '6%',
+      width: '1%',
       responsive: ['sm'],
       render: (duration) => {
         return <div className="duration-td">{duration}</div>;
@@ -254,6 +254,11 @@ const StyledTable = styled(Table)`
     align-items: center;
   }
 
+  .order-num {
+    width: 32px;
+    text-align: center;
+  }
+
   .ant-table-tbody > tr > td.ant-table-cell-row-hover {
     background-color: rgba(255, 255, 255, 0.1);
     .order {
@@ -262,6 +267,10 @@ const StyledTable = styled(Table)`
       }
       button {
         display: block;
+        width: 16px;
+        svg {
+          width: 16px;
+        }
       }
     }
   }
@@ -321,17 +330,13 @@ const OrderNum = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 30px;
-  min-height: 30px;
-  min-width: 30px;
-  width: 30px;
 `;
 
 const PlayButton = styled(Button)`
   display: none;
   background-color: transparent;
   color: #fff;
-  width: 30px;
+  width: 20px;
   border: none;
   &:hover,
   &:active,
