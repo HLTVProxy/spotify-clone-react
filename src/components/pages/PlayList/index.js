@@ -1,16 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import InfoHeader from '../../common/InfoHeader';
 import ActionBar from '../../common/ActionBar';
 import SongList from '../../common/SongList';
 import apiClient from '../../../spotify';
 import { msInfoHeaderFormat } from '../../../helper';
+import UserContext from '../../../contexts/UserContext';
 
 function PlayList() {
   const params = useParams();
   const [headerInfo, setHeaderInfo] = useState([]);
   const [actionBarInfo, setActionBarInfo] = useState({});
   const [playlistTracks, setPlaylistTracks] = useState([]);
+  const [isPlaylistSaved, setPlaylistSaved] = useState(false);
+  const { currentUserID } = useContext(UserContext);
 
   useEffect(() => {
     fetchPlaylist();
@@ -21,8 +24,13 @@ function PlayList() {
       .get(`playlists/${params.id}`)
       .then((res) => {
         let tracksMsTotal = 0;
-        res.data.tracks.items.forEach((item) => {
-          tracksMsTotal += item.track.duration_ms;
+        let filterUndefineTracks = res.data.tracks.items.filter((item) => {
+          return item.track?.duration_ms !== undefined;
+        });
+
+        filterUndefineTracks.forEach((item, idx) => {
+          tracksMsTotal +=
+            item.track.duration_ms !== undefined ? item.track.duration_ms : 0;
         });
 
         let headerInfoData = {
@@ -42,7 +50,7 @@ function PlayList() {
         };
         setActionBarInfo(actionBarData);
 
-        let resultTracks = res.data.tracks.items.map((item, idx) => {
+        let resultTracks = filterUndefineTracks.map((item, idx) => {
           return {
             index: (idx += 1),
             key: item.track.id,
@@ -58,6 +66,13 @@ function PlayList() {
           };
         });
         setPlaylistTracks(resultTracks);
+
+        return apiClient.get(
+          `playlists/${params.id}/followers/contains?ids=${currentUserID}`
+        );
+      })
+      .then((res) => {
+        setPlaylistSaved(res.data[0]);
       })
       .catch((err) => {
         console.log(err);
@@ -67,7 +82,9 @@ function PlayList() {
   return (
     <>
       <InfoHeader detail={true}>{headerInfo}</InfoHeader>
-      <ActionBar>{actionBarInfo}</ActionBar>
+      <ActionBar type="playlist" isPlaylistSaved={isPlaylistSaved}>
+        {actionBarInfo}
+      </ActionBar>
       <SongList>{playlistTracks}</SongList>
     </>
   );

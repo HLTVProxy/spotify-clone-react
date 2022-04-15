@@ -20,6 +20,8 @@ const scopes = [
   'user-read-email',
   'user-library-modify',
   'user-library-read',
+  'playlist-modify-public',
+  'playlist-modify-private',
 ];
 
 export const loginEndpoint = `${authEndpoint}client_id=${clientID}&redirect_uri=${redirectUri}&scope=${scopes.join(

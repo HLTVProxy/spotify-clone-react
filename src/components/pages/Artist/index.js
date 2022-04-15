@@ -25,7 +25,14 @@ function Artist() {
         .catch((err) => {
           console.log(err);
         });
-
+      const isFollowingArtist = await apiClient
+        .get(`me/following/contains?type=artist&ids=${artistData.id}`)
+        .then((res) => {
+          return res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       const artistTopTrackData = await apiClient
         .get(`artists/${params.id}/top-tracks?market=TW`)
         .then((res) => {
@@ -58,9 +65,7 @@ function Artist() {
         });
 
       const relatedArtistsDataArr = await apiClient
-        .get(
-          `artists/${params.id}/related-artists`
-        )
+        .get(`artists/${params.id}/related-artists`)
         .then((res) => {
           return res.data.artists.filter((artist, idx) => idx < 8);
         })
@@ -77,6 +82,7 @@ function Artist() {
       let actionBarData = {
         id: artistData.id,
         uri: artistData.uri,
+        isFollowing: isFollowingArtist[0],
       };
 
       let artistAlbumsData = artistAlbumsDataArr.map((album) => {
@@ -94,7 +100,9 @@ function Artist() {
           id: single.id,
           uri: single.uri,
           title: single.name,
-          descriptions: `${single.release_date.split('-')[0]}・${single.total_tracks > 1 ? '迷你專輯' : '單曲'}`,
+          descriptions: `${single.release_date.split('-')[0]}・${
+            single.total_tracks > 1 ? '迷你專輯' : '單曲'
+          }`,
           coverUrl: single.images[0].url,
         };
       });
@@ -122,14 +130,20 @@ function Artist() {
 
   return (
     <>
-      <InfoHeader type="artist" detail={true}>{headerInfo}</InfoHeader>
+      <InfoHeader type="artist" detail={true}>
+        {headerInfo}
+      </InfoHeader>
       <ActionBar type="artist">{actionBarInfo}</ActionBar>
       <HotTrackList>{artistTopTrack}</HotTrackList>
       <CardList title="專輯" type="artist-albums" detailText="查看音樂作品">
         {artistAlbums}
       </CardList>
-      <CardList title="單曲和迷你專輯" type="singles" detailText="查看音樂作品">{artistSingles}</CardList>
-      <CardList title="粉絲也喜歡" type="artists">{relatedArtists}</CardList>
+      <CardList title="單曲和迷你專輯" type="singles" detailText="查看音樂作品">
+        {artistSingles}
+      </CardList>
+      <CardList title="粉絲也喜歡" type="artists">
+        {relatedArtists}
+      </CardList>
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import logo from './../../../img/Spotify_Icon_RGB_Green.png';
 import { Layout, Drawer, Button, Avatar, Dropdown } from 'antd';
 import {
@@ -10,12 +10,14 @@ import styled from 'styled-components';
 import avatarMenu from './AvatarMenu';
 import PageActionButton from './PageActionButton';
 import apiClient from '../../../spotify';
+import UserContext from '../../../contexts/UserContext';
 const { Header } = Layout;
 
 export default function Index({ menu }) {
   const [siderVisible, setSiderVisible] = useState(false);
   const [avatarMenuVisible, setAvatarMenuVisible] = useState(false);
   const [profileInfo, setProfileInfo] = useState({ name: '', avatarUrl: '' });
+  const { setUserID } = useContext(UserContext);
   useEffect(() => {
     apiClient
       .get('me')
@@ -24,6 +26,7 @@ export default function Index({ menu }) {
           name: res.data.display_name,
           avatarUrl: res.data.images[0]?.url,
         });
+        setUserID(res.data.id);
       })
       .catch((err) => {
         console.log(err);

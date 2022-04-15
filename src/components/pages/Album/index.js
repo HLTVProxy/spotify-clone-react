@@ -27,6 +27,15 @@ function Album() {
           console.log(err);
         });
 
+      const isSaveAlbum = await apiClient
+        .get(`me/albums/contains?ids=${params.id}`)
+        .then((res) => {
+          return res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
       const artistAlbumsDataArr = await apiClient
         .get(
           `artists/${albumData.artists[0].id}/albums?include_groups=album%2Csingle&market=TW&limit=8`
@@ -58,6 +67,7 @@ function Album() {
       let actionBarData = {
         id: albumData.id,
         uri: albumData.uri,
+        isSave: isSaveAlbum[0],
       };
 
       let albumTracksData = albumData.tracks.items.map((track, idx) => {
@@ -74,8 +84,8 @@ function Album() {
       });
 
       let albumCopyrightData = albumData.copyrights.map((copyright) => {
-        return {type: copyright.type, text: copyright.text}
-      })
+        return { type: copyright.type, text: copyright.text };
+      });
 
       let artistAlbumsData = artistAlbumsDataArr.map((album) => {
         return {

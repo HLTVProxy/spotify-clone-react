@@ -1,10 +1,12 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { Dropdown, Menu } from 'antd';
 import PlayerContext from '../../../contexts/PlayerContext';
+import apiClient from '../../../spotify';
 
-function ActionBar({ type = 'album', children }) {
-  const { playTrack } = useContext(PlayerContext);
+function ActionBar({ type = 'album', isPlaylistSaved = false, children }) {
+  const { playTrack, currentPlayerUri, isPlay, setIsPlay } =
+    useContext(PlayerContext);
 
   const menu = (
     <StyledMenu>
@@ -16,18 +18,118 @@ function ActionBar({ type = 'album', children }) {
   );
 
   const handlePlayClick = () => {
-    playTrack(children.uri);
+    if (isPlay) {
+      setIsPlay(false);
+    } else if (currentPlayerUri === children.uri) {
+      setIsPlay(true);
+    } else {
+      setIsPlay(false);
+      playTrack(children.uri);
+    }
   };
 
   const [isArtistFollow, setIsArtistFollow] = useState(false);
   const handleFollowClick = () => {
+    if (isArtistFollow) {
+      apiClient
+        .delete(`me/following?type=artist&ids=${children.id}`, {
+          ids: [children.id],
+        })
+        .then((res) => {
+          return res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      apiClient
+        .put(`me/following?type=artist&ids=${children.id}`, {
+          ids: [children.id],
+        })
+        .then((res) => {
+          return res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
     setIsArtistFollow(!isArtistFollow);
   };
 
   const [isSave, setIsSave] = useState(false);
   const handleSaveClick = () => {
+    let typeParam = '';
+    switch (type) {
+      case 'track':
+        typeParam = 'tracks';
+        break;
+      case 'album':
+        typeParam = 'albums';
+        break;
+      case 'playlist':
+      default:
+        break;
+    }
+    if (isSave) {
+      if (typeParam !== '') {
+        apiClient
+          .delete(`me/${typeParam}?ids=${children.id}`, { ids: [children.id] })
+          .then((res) => {
+            return res.data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        apiClient
+          .delete(`playlists/${children.id}/followers`)
+          .then((res) => {
+            return res.data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    } else {
+      if (typeParam !== '') {
+        apiClient
+          .put(`me/${typeParam}?ids=${children.id}`, { ids: [children.id] })
+          .then((res) => {
+            return res.data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        apiClient
+          .put(`playlists/${children.id}/followers`)
+          .then((res) => {
+            return res.data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    }
     setIsSave(!isSave);
   };
+
+  useEffect(() => {
+    switch (type) {
+      case 'artist':
+        setIsArtistFollow(children?.isFollowing);
+        break;
+      case 'track':
+      case 'album':
+        setIsSave(children?.isSave);
+        break;
+      case 'playlist':
+        setIsPlay(isPlaylistSaved);
+        break;
+      default:
+        break;
+    }
+  }, [children]);
 
   return (
     <StyledDiv>
@@ -36,11 +138,17 @@ function ActionBar({ type = 'album', children }) {
           handlePlayClick();
         }}
       >
-        <svg role="img" height="24" width="24" viewBox="0 0 24 24">
-          <path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path>
-        </svg>
+        {currentPlayerUri === children.uri && isPlay === true ? (
+          <svg role="img" height="28" width="28" viewBox="0 0 24 24">
+            <path d="M5.7 3a.7.7 0 00-.7.7v16.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V3.7a.7.7 0 00-.7-.7H5.7zm10 0a.7.7 0 00-.7.7v16.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V3.7a.7.7 0 00-.7-.7h-2.6z"></path>
+          </svg>
+        ) : (
+          <svg role="img" height="24" width="24" viewBox="0 0 24 24">
+            <path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"></path>
+          </svg>
+        )}
       </PlayButton>
-      {type === 'album' ? (
+      {type !== 'artist' ? (
         <SvgButton
           className="save-btn"
           isSave={isSave}
@@ -49,19 +157,12 @@ function ActionBar({ type = 'album', children }) {
           }}
         >
           {isSave ? (
-            <svg
-              role="img"
-              height="32"
-              width="32"
-              viewBox="0 0 24 24"
-            >
+            <svg role="img" height="32" width="32" viewBox="0 0 24 24">
               <path d="M8.667 1.912a6.257 6.257 0 00-7.462 7.677c.24.906.683 1.747 1.295 2.457l7.955 9.482a2.015 2.015 0 003.09 0l7.956-9.482a6.188 6.188 0 001.382-5.234l-.49.097.49-.099a6.303 6.303 0 00-5.162-4.98h-.002a6.24 6.24 0 00-5.295 1.65.623.623 0 01-.848 0 6.257 6.257 0 00-2.91-1.568z"></path>
             </svg>
           ) : (
             <svg role="img" height="32" width="32" viewBox="0 0 24 24">
-              <path
-                d="M5.21 1.57a6.757 6.757 0 016.708 1.545.124.124 0 00.165 0 6.741 6.741 0 015.715-1.78l.004.001a6.802 6.802 0 015.571 5.376v.003a6.689 6.689 0 01-1.49 5.655l-7.954 9.48a2.518 2.518 0 01-3.857 0L2.12 12.37A6.683 6.683 0 01.627 6.714 6.757 6.757 0 015.21 1.57zm3.12 1.803a4.757 4.757 0 00-5.74 3.725l-.001.002a4.684 4.684 0 001.049 3.969l.009.01 7.958 9.485a.518.518 0 00.79 0l7.968-9.495a4.688 4.688 0 001.049-3.965 4.803 4.803 0 00-3.931-3.794 4.74 4.74 0 00-4.023 1.256l-.008.008a2.123 2.123 0 01-2.9 0l-.007-.007a4.757 4.757 0 00-2.214-1.194z"
-              ></path>
+              <path d="M5.21 1.57a6.757 6.757 0 016.708 1.545.124.124 0 00.165 0 6.741 6.741 0 015.715-1.78l.004.001a6.802 6.802 0 015.571 5.376v.003a6.689 6.689 0 01-1.49 5.655l-7.954 9.48a2.518 2.518 0 01-3.857 0L2.12 12.37A6.683 6.683 0 01.627 6.714 6.757 6.757 0 015.21 1.57zm3.12 1.803a4.757 4.757 0 00-5.74 3.725l-.001.002a4.684 4.684 0 001.049 3.969l.009.01 7.958 9.485a.518.518 0 00.79 0l7.968-9.495a4.688 4.688 0 001.049-3.965 4.803 4.803 0 00-3.931-3.794 4.74 4.74 0 00-4.023 1.256l-.008.008a2.123 2.123 0 01-2.9 0l-.007-.007a4.757 4.757 0 00-2.214-1.194z"></path>
             </svg>
           )}
         </SvgButton>

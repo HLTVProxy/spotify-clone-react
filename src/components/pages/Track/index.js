@@ -28,6 +28,15 @@ function Track() {
           console.log(err);
         });
 
+      const isSavedTrack = await apiClient
+        .get(`me/tracks/contains?ids=${params.id}`)
+        .then((res) => {
+          return res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
       const artistTopTrackData = await apiClient
         .get(`artists/${trackData.artists[0].id}/top-tracks?market=TW`)
         .then((res) => {
@@ -50,6 +59,7 @@ function Track() {
       let actionBarData = {
         id: trackData.id,
         uri: trackData.uri,
+        isSave: isSavedTrack[0],
       };
 
       let artistTopTrackDataArr = artistTopTrackData.map((track) => {

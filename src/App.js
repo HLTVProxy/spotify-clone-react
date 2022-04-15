@@ -29,6 +29,7 @@ import Genre from './components/pages/Genre';
 import Track from './components/pages/Track';
 import { PlayerProvider } from './contexts/PlayerContext';
 import { SeedProvider } from './contexts/TrackSeedContext';
+import { UserProvider } from './contexts/UserContext';
 
 function App() {
   // Spotify token
@@ -61,7 +62,10 @@ function App() {
     let key = '';
     if (pathName.includes('/user')) {
       key = '';
-    } else if (pathName.includes('/playlist') && !pathName.includes('/collection/playlists')) {
+    } else if (
+      pathName.includes('/playlist') &&
+      !pathName.includes('/collection/playlists')
+    ) {
       let pathSplitArr = pathName.split('/');
       key = pathSplitArr[2];
     } else {
@@ -93,54 +97,58 @@ function App() {
     <Login />
   ) : (
     <Layout className="App">
-      <PlayerProvider>
-        <SeedProvider>
-          <Router>
-            <Header menu={Menu} />
-            <Layout>
-              <Sider menu={Menu} />
+      <UserProvider>
+        <PlayerProvider>
+          <SeedProvider>
+            <Router>
+              <Header menu={Menu} />
               <Layout>
-                <StyledContent>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/search" element={<Search />} />
-                    <Route path="/search/:searchText" element={<Search />} />
-                    <Route
-                      path="/search/:searchText/tracks"
-                      element={<ResultTracks />}
-                    />
-                    <Route
-                      path="/search/:searchText/artists"
-                      element={<ResultArtists />}
-                    />
-                    <Route path="/playlist/:id" element={<PlayList />} />
-                    <Route path="/user" element={<User />} />
-                    <Route path="/artist/:id" element={<Artist />} />
-                    <Route path="/album/:id" element={<Album />} />
-                    <Route path="/genre/:id" element={<Genre />} />
-                    <Route path="/track/:id" element={<Track />} />
-                    <Route
-                      path="/collection"
-                      element={<Navigate to="/collection/playlists" replace />}
-                    />
-                    <Route
-                      path="/collection/playlists"
-                      element={<PlayLists />}
-                    />
-                    <Route
-                      path="/collection/playlists/:id"
-                      element={<PlayList />}
-                    />
-                    <Route path="/collection/artists" element={<Artists />} />
-                    <Route path="/collection/albums" element={<Albums />} />
-                  </Routes>
-                </StyledContent>
+                <Sider menu={Menu} />
+                <Layout>
+                  <StyledContent>
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/search" element={<Search />} />
+                      <Route path="/search/:searchText" element={<Search />} />
+                      <Route
+                        path="/search/:searchText/tracks"
+                        element={<ResultTracks />}
+                      />
+                      <Route
+                        path="/search/:searchText/artists"
+                        element={<ResultArtists />}
+                      />
+                      <Route path="/playlist/:id" element={<PlayList />} />
+                      <Route path="/user" element={<User />} />
+                      <Route path="/artist/:id" element={<Artist />} />
+                      <Route path="/album/:id" element={<Album />} />
+                      <Route path="/genre/:id" element={<Genre />} />
+                      <Route path="/track/:id" element={<Track />} />
+                      <Route
+                        path="/collection"
+                        element={
+                          <Navigate to="/collection/playlists" replace />
+                        }
+                      />
+                      <Route
+                        path="/collection/playlists"
+                        element={<PlayLists />}
+                      />
+                      <Route
+                        path="/collection/playlists/:id"
+                        element={<PlayList />}
+                      />
+                      <Route path="/collection/artists" element={<Artists />} />
+                      <Route path="/collection/albums" element={<Albums />} />
+                    </Routes>
+                  </StyledContent>
+                </Layout>
               </Layout>
-            </Layout>
-          </Router>
-          <Player token={token} />
-        </SeedProvider>
-      </PlayerProvider>
+            </Router>
+            <Player token={token} />
+          </SeedProvider>
+        </PlayerProvider>
+      </UserProvider>
     </Layout>
   );
 }
