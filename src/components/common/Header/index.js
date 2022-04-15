@@ -54,7 +54,7 @@ export default function Index({ menu }) {
         </div>
         <div className="right-nav">
           <StyledDropdown
-            overlay={avatarMenu}
+            overlay={avatarMenu({ setAvatarMenuVisible: setAvatarMenuVisible })}
             trigger={['click']}
             placement="bottomRight"
             visible={avatarMenuVisible}

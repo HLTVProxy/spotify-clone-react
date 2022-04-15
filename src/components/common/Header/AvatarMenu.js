@@ -4,9 +4,13 @@ import { Menu } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 
-function AvatarMenu() {
+function AvatarMenu({ setAvatarMenuVisible }) {
   return (
-    <StyledMenu>
+    <StyledMenu
+      onClick={() => {
+        setAvatarMenuVisible(false);
+      }}
+    >
       <Menu.Item key="account" className="account">
         <a
           rel="noopener noreferrer"
@@ -21,9 +25,14 @@ function AvatarMenu() {
         <Link to="/user">個人檔案</Link>
       </Menu.Item>
       <Menu.Item key="logout">
-        <a href="/" onClick={() => {
-          window.localStorage.removeItem('token');
-        }}>登出</a>
+        <a
+          href="/"
+          onClick={() => {
+            window.localStorage.removeItem('token');
+          }}
+        >
+          登出
+        </a>
       </Menu.Item>
     </StyledMenu>
   );
