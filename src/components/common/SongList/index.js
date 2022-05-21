@@ -13,7 +13,7 @@ function SongList({
   copyright,
   children,
 }) {
-  const { playTrack } = useContext(PlayerContext);
+  const { setIsPlay, playTrack } = useContext(PlayerContext);
 
   const columns = [
     {
@@ -32,7 +32,10 @@ function SongList({
               <PlayButton
                 icon={<CaretRightOutlined />}
                 size="large"
-                onClick={() => playTrack(indexObject.uri)}
+                onClick={() => {
+                  setIsPlay(false);
+                  playTrack(indexObject.uri);
+                }}
               />
             </OrderNum>
           </>
