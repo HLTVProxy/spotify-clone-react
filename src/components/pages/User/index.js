@@ -83,7 +83,7 @@ function User() {
             id: artist.id,
             uri: artist.uri,
             title: artist.name,
-            descriptions: '個人檔案',
+            descriptions: '藝人',
             coverUrl: artist.images[0]?.url,
           };
         }
