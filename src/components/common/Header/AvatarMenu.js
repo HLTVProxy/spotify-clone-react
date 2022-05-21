@@ -28,7 +28,7 @@ function AvatarMenu({ setAvatarMenuVisible }) {
         <a
           href="/"
           onClick={() => {
-            window.localStorage.removeItem('token');
+            window.localStorage.removeItem('refresh_token');
           }}
         >
           登出

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,7 +6,6 @@ import {
   Navigate,
 } from 'react-router-dom';
 import { Layout } from 'antd';
-import { setClientToken } from './spotify';
 import './index.css';
 import Header from './components/common/Header';
 import Sider from './components/common/Sider';
@@ -14,6 +13,7 @@ import MobileSider from './components/common/MobileSider';
 import Player from './components/common/Player';
 import StyledContent from './components/common/Content';
 import Login from './components/pages/Login';
+import Oauth from './components/pages/Oauth';
 import Home from './components/pages/Home';
 import Search from './components/pages/Search';
 import User from './components/pages/User';
@@ -30,24 +30,23 @@ import Track from './components/pages/Track';
 import { PlayerProvider } from './contexts/PlayerContext';
 import { SeedProvider } from './contexts/TrackSeedContext';
 import { UserProvider } from './contexts/UserContext';
+import AuthContext from './contexts/AuthContext';
 
 function App() {
   // Spotify token
   const [token, setToken] = useState('');
+  const { accessToken} = useContext(AuthContext);
+
   useEffect(() => {
-    const token = window.localStorage.getItem('token');
-    const hash = window.location.hash;
-    window.location.hash = '';
-    if (!token && hash) {
-      const _token = hash.split('&')[0].split('=')[1];
-      window.localStorage.setItem('token', _token);
-      setToken(_token);
-      setClientToken(_token);
-    } else {
-      setToken(token);
-      setClientToken(token);
+    if (accessToken !== '') {
+      setToken(accessToken);
+    } else if (
+      window.localStorage.getItem('refresh_token') !== null &&
+      window.location.pathname !== '/oauth'
+    ) {
+      window.location.href = '/oauth';
     }
-  }, [window.localStorage.key('token')]);
+  }, [accessToken]);
 
   // Sidebar selected menu
   const topics = [
@@ -94,7 +93,12 @@ function App() {
   );
 
   return !token ? (
-    <Login />
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/oauth" element={<Oauth />} />
+      </Routes>
+    </Router>
   ) : (
     <Layout className="App">
       <UserProvider>

@@ -1,8 +1,10 @@
 import axios from 'axios';
 
 const authEndpoint = 'https://accounts.spotify.com/authorize?';
-const clientID = 'ea8435ec4ef94ad199b1cec54848fec0';
-const redirectUri = 'http://localhost:3000';
+export const refreshEndpoint = 'https://accounts.spotify.com/api/token'
+export const clientID = 'ea8435ec4ef94ad199b1cec54848fec0';
+export const clientSecret = 'd9b5312a0c7e402d86ebeddf5537b776';
+export const redirectUri = 'http://localhost:3000/oauth';
 const scopes = [
   'user-modify-playback-state',
   'user-read-playback-state',
@@ -26,7 +28,7 @@ const scopes = [
 
 export const loginEndpoint = `${authEndpoint}client_id=${clientID}&redirect_uri=${redirectUri}&scope=${scopes.join(
   '%20'
-)}&response_type=token&show_dialog=true`;
+)}&response_type=code&show_dialog=true`;
 
 const apiClient = axios.create({ baseURL: 'https://api.spotify.com/v1/' });
 

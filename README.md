@@ -38,5 +38,5 @@ need to change clientID in src/spotify.js for yourself
 
 - ✔️ Basic Features
 - ✔️ optimize search
-- change authorization method
+- ✔️ change authorization method
 - organize part of component
