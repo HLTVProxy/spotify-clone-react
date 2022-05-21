@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { Input } from 'antd';
 import styled from 'styled-components';
@@ -6,6 +6,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import GenreList from '../../common/GenreList';
 import SearchResult from '../../common/SearchResult';
 import apiClient from '../../../spotify';
+import { debounce } from 'lodash';
 
 function Search() {
   // let params = useParams();
@@ -28,7 +29,7 @@ function Search() {
               descriptions: '藝人',
               coverUrl: artist.images[0]?.url,
             };
-          }); 
+          });
           let resultTracks = res.data.tracks.items.map((track) => {
             return {
               id: track.id,
@@ -43,7 +44,7 @@ function Search() {
               coverUrl: track.album.images[0]?.url,
             };
           });
-          setResultData({artists: resultArtists, tracks: resultTracks});
+          setResultData({ artists: resultArtists, tracks: resultTracks });
         })
         .catch((err) => {
           console.log(err);
@@ -56,9 +57,9 @@ function Search() {
             return {
               id: category.id,
               name: category.name,
-              img: category.icons[0]?.url
+              img: category.icons[0]?.url,
             };
-          })
+          });
           setGenresList(categoriesArr);
         })
         .catch((err) => {
@@ -67,8 +68,8 @@ function Search() {
     }
   }, [search]);
 
-  const handleSearch = (text) => {
-    setSearch(text);
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
   };
 
   return (
@@ -77,10 +78,7 @@ function Search() {
         placeholder="藝人、歌曲"
         prefix={<SearchOutlined />}
         allowClear
-        onChange={(e) => {
-          handleSearch(e.target.value);
-        }}
-        value={search}
+        onChange={debounce(handleSearch, 300)}
       />
       {search !== '' ? (
         <SearchResult searchText={search}>{resultData}</SearchResult>
