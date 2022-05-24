@@ -37,7 +37,11 @@ function Artists() {
   return (
     <>
       {artistsResult && (
-        <CardList type="artists" title={`「${params.searchText}」的所有藝人`} detail={false}>
+        <CardList
+          type="artists"
+          title={`「${params.searchText}」的所有藝人`}
+          detail={false}
+        >
           {artistsResult}
         </CardList>
       )}

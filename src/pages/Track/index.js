@@ -19,32 +19,21 @@ function Track() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const trackData = await apiClient
-        .get(`tracks/${params.id}`)
-        .then((res) => {
-          return res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      let trackData = {};
+      try {
+        const res = await apiClient.get(`tracks/${params.id}`);
+        trackData = res.data;
+      } catch (err) {
+        console.log(err);
+      }
 
-      const isSavedTrack = await apiClient
-        .get(`me/tracks/contains?ids=${params.id}`)
-        .then((res) => {
-          return res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      const artistTopTrackData = await apiClient
-        .get(`artists/${trackData.artists[0].id}/top-tracks?market=TW`)
-        .then((res) => {
-          return res.data.tracks.filter((track, idx) => idx < 8);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      let isSavedTrack = [];
+      try {
+        const res = await apiClient.get(`me/tracks/contains?ids=${params.id}`);
+        isSavedTrack = res.data;
+      } catch (err) {
+        console.log(err);
+      }
 
       let headerInfoData = {
         title: trackData.name,
@@ -62,20 +51,30 @@ function Track() {
         isSave: isSavedTrack[0],
       };
 
-      let artistTopTrackDataArr = artistTopTrackData.map((track) => {
-        return {
-          id: track.id,
-          uri: track.uri,
-          title: track.name,
-          artistIDs: track.artists.map((artist) => {
-            return artist.id;
-          }),
-          artistNames: track.artists.map((artist) => {
-            return artist.name;
-          }),
-          coverUrl: track.album.images[0].url,
-        };
-      });
+      let artistTopTrackData = [];
+      try {
+        const res = await apiClient.get(
+          `artists/${trackData.artists[0].id}/top-tracks?market=TW`
+        );
+        artistTopTrackData = res.data.tracks
+          .filter((track, idx) => idx < 8)
+          .map((track) => {
+            return {
+              id: track.id,
+              uri: track.uri,
+              title: track.name,
+              artistIDs: track.artists.map((artist) => {
+                return artist.id;
+              }),
+              artistNames: track.artists.map((artist) => {
+                return artist.name;
+              }),
+              coverUrl: track.album.images[0].url,
+            };
+          });
+      } catch (err) {
+        console.log(err);
+      }
 
       setHeaderInfo(headerInfoData);
       setActionBarInfo(actionBarData);
@@ -83,8 +82,9 @@ function Track() {
         id: trackData.artists[0].id,
         name: trackData.artists[0].name,
       });
-      setArtistTopTracks(artistTopTrackDataArr);
+      setArtistTopTracks(artistTopTrackData);
     };
+
     fetchData();
   }, [params.id]);
 

@@ -19,7 +19,9 @@ function PlayLists() {
             id: playlist.id,
             uri: playlist.uri,
             title: playlist.name,
-            descriptions: playlist.description ? playlist.description : `來自 ${playlist.owner.display_name}`,
+            descriptions: playlist.description
+              ? playlist.description
+              : `來自 ${playlist.owner.display_name}`,
             coverUrl: playlist.images[0]?.url,
           };
         });
@@ -28,12 +30,14 @@ function PlayLists() {
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
   return (
     <>
       <CollectionTabs />
-      <CardList title="播放清單" type="collectionPlaylist" detail={false}>{collectionPlaylists}</CardList>
+      <CardList title="播放清單" type="collectionPlaylist" detail={false}>
+        {collectionPlaylists}
+      </CardList>
     </>
   );
 }

@@ -41,17 +41,19 @@ function Oauth() {
           },
         };
 
-        const authData = await axios
-          .post(refreshEndpoint, qs.stringify(formData), config)
-          .then((res) => {
-            return res.data;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        let authData = {};
+        try {
+          const res = await axios
+          .post(refreshEndpoint, qs.stringify(formData), config);
+          authData = res.data;
+        } catch (err) {
+          console.log(err);
+        }
+        
         setUserAccessToken(authData?.access_token);
         setClientToken(authData?.access_token);
         window.localStorage.setItem('refresh_token', authData?.refresh_token);
+
         navigate('/');
       };
       fetchAuthData();
@@ -73,21 +75,25 @@ function Oauth() {
           },
         };
 
-        const authData = await axios
-          .post(refreshEndpoint, qs.stringify(formData), config)
-          .then((res) => {
-            return res.data;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        let authData = {};
+        try {
+          const res = await axios
+          .post(refreshEndpoint, qs.stringify(formData), config);
+          authData = res.data;
+        } catch (err) {
+          console.log(err);
+        }
+
         setUserAccessToken(authData?.access_token);
         setClientToken(authData?.access_token);
+
         navigate('/');
       };
+
       fetchRefreshToken();
     }
   }, [accessToken]);
+
   return <></>;
 }
 

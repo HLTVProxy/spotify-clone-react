@@ -28,12 +28,14 @@ function Artists() {
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
   return (
     <>
       <CollectionTabs />
-      <CardList title="藝人" type="artists" detail={false}>{collectionArtists}</CardList>
+      <CardList title="藝人" type="artists" detail={false}>
+        {collectionArtists}
+      </CardList>
     </>
   );
 }

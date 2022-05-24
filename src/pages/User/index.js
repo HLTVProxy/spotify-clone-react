@@ -13,72 +13,26 @@ function User() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const userData = await apiClient
-        .get(`me`)
-        .then((res) => {
-          return res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      const userTopArtistsDataArr = await apiClient
-        .get(`me/top/artists?limit=8&time_range=short_term`)
-        .then((res) => {
-          return res.data.items;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      const userTopTracksDataArr = await apiClient
-        .get(`me/top/tracks?limit=4&time_range=short_term`)
-        .then((res) => {
-          return res.data.items;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      const userFollowingArtistsDataArr = await apiClient
-        .get(`me/following?type=artist&limit=8`)
-        .then((res) => {
-          return res.data.artists.items;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      let userData = {};
+      try {
+        const res = await apiClient.get(`me`);
+        userData = res.data;
+      } catch (err) {
+        console.log(err);
+      }
 
       let headerInfoData = {
         title: userData.display_name,
         coverUrl: userData.images[0]?.url,
         followers: parseInt(userData.followers.total).toLocaleString('en-US'),
       };
-      let userTopArtistsData = userTopArtistsDataArr.map((artist) => {
-        return {
-          id: artist.id,
-          uri: artist.uri,
-          title: artist.name,
-          descriptions: '藝人',
-          coverUrl: artist.images[0]?.url,
-        };
-      });
-      let userTopTracksData = userTopTracksDataArr.map((item, idx) => {
-        return {
-          index: (idx += 1),
-          key: item.id,
-          id: item.id,
-          name: item.name,
-          uri: item.uri,
-          artistsIDs: item.artists.map((artist) => artist.id),
-          artistsNames: item.artists.map((artist) => artist.name),
-          albumName: item.album.name,
-          albumID: item.album.id,
-          coverUrl: item.album.images[0]?.url,
-          duration: item.duration_ms,
-        };
-      });
-      let userFollowingArtistsData = userFollowingArtistsDataArr.map(
-        (artist) => {
+
+      let userTopArtistsData = {};
+      try {
+        const res = await apiClient.get(
+          `me/top/artists?limit=8&time_range=short_term`
+        );
+        userTopArtistsData = res.data.items.map((artist) => {
           return {
             id: artist.id,
             uri: artist.uri,
@@ -86,8 +40,48 @@ function User() {
             descriptions: '藝人',
             coverUrl: artist.images[0]?.url,
           };
-        }
-      );
+        });
+      } catch (err) {
+        console.log(err);
+      }
+
+      let userTopTracksData = {};
+      try {
+        const res = await apiClient.get(
+          `me/top/tracks?limit=4&time_range=short_term`
+        );
+        userTopTracksData = res.data.items.map((item, idx) => {
+          return {
+            index: (idx += 1),
+            key: item.id,
+            id: item.id,
+            name: item.name,
+            uri: item.uri,
+            artistsIDs: item.artists.map((artist) => artist.id),
+            artistsNames: item.artists.map((artist) => artist.name),
+            albumName: item.album.name,
+            albumID: item.album.id,
+            coverUrl: item.album.images[0]?.url,
+            duration: item.duration_ms,
+          };
+        });
+      } catch (err) {
+        console.log(err);
+      }
+
+      let userFollowingArtistsData = [];
+      try {
+        const res = await apiClient.get(`me/following?type=artist&limit=8`);
+        userFollowingArtistsData = res.data.artists.items.map((artist) => {
+          return {
+            id: artist.id,
+            uri: artist.uri,
+            title: artist.name,
+            descriptions: '藝人',
+            coverUrl: artist.images[0]?.url,
+          };
+        });
+      } catch (err) {}
 
       setUserData({
         id: userData.id,

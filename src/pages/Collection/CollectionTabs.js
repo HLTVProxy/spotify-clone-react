@@ -10,6 +10,7 @@ function CollectionTabs() {
     { name: 'collection-artists', path: '/artists' },
     { name: 'collection-albums', path: '/albums' },
   ];
+
   useEffect(() => {
     let pathName = window.location.pathname;
     let tabIndex = 0;

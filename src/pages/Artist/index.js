@@ -17,61 +17,23 @@ function Artist() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const artistData = await apiClient
-        .get(`artists/${params.id}`)
-        .then((res) => {
-          return res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      const isFollowingArtist = await apiClient
-        .get(`me/following/contains?type=artist&ids=${artistData.id}`)
-        .then((res) => {
-          return res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      const artistTopTrackData = await apiClient
-        .get(`artists/${params.id}/top-tracks?market=TW`)
-        .then((res) => {
-          return res.data.tracks;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      let artistData = {};
+      try {
+        const res = await apiClient.get(`artists/${params.id}`);
+        artistData = res.data;
+      } catch (err) {
+        console.log(err);
+      }
 
-      const artistAlbumsDataArr = await apiClient
-        .get(
-          `artists/${params.id}/albums?include_groups=album&market=TW&limit=8`
-        )
-        .then((res) => {
-          return res.data.items;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      const artistSinglesDataArr = await apiClient
-        .get(
-          `artists/${params.id}/albums?include_groups=single&market=TW&limit=8`
-        )
-        .then((res) => {
-          return res.data.items;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      const relatedArtistsDataArr = await apiClient
-        .get(`artists/${params.id}/related-artists`)
-        .then((res) => {
-          return res.data.artists.filter((artist, idx) => idx < 8);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      let isFollowingArtist = [];
+      try {
+        const res = await apiClient.get(
+          `me/following/contains?type=artist&ids=${artistData.id}`
+        );
+        isFollowingArtist = res.data;
+      } catch (err) {
+        console.log(err);
+      }
 
       let headerInfoData = {
         title: artistData.name,
@@ -85,37 +47,71 @@ function Artist() {
         isFollowing: isFollowingArtist[0],
       };
 
-      let artistAlbumsData = artistAlbumsDataArr.map((album) => {
-        return {
-          id: album.id,
-          uri: album.uri,
-          title: album.name,
-          descriptions: `${album.release_date.split('-')[0]}・專輯`,
-          coverUrl: album.images[0].url,
-        };
-      });
+      let artistTopTrackData = [];
+      try {
+        const res = await apiClient.get(
+          `artists/${params.id}/top-tracks?market=TW`
+        );
+        artistTopTrackData = res.data.tracks;
+      } catch (err) {
+        console.log(err);
+      }
 
-      let artistSinglesData = artistSinglesDataArr.map((single) => {
-        return {
-          id: single.id,
-          uri: single.uri,
-          title: single.name,
-          descriptions: `${single.release_date.split('-')[0]}・${
-            single.total_tracks > 1 ? '迷你專輯' : '單曲'
-          }`,
-          coverUrl: single.images[0].url,
-        };
-      });
+      let artistAlbumsData = [];
+      try {
+        const res = await apiClient.get(
+          `artists/${params.id}/albums?include_groups=album&market=TW&limit=8`
+        );
+        artistAlbumsData = res.data.items.map((album) => {
+          return {
+            id: album.id,
+            uri: album.uri,
+            title: album.name,
+            descriptions: `${album.release_date.split('-')[0]}・專輯`,
+            coverUrl: album.images[0].url,
+          };
+        });
+      } catch (err) {
+        console.log(err);
+      }
 
-      let relatedArtistsData = relatedArtistsDataArr.map((artist) => {
-        return {
-          id: artist.id,
-          uri: artist.uri,
-          title: artist.name,
-          descriptions: '藝人',
-          coverUrl: artist.images[0]?.url,
-        };
-      });
+      let artistSinglesData = [];
+      try {
+        const res = await apiClient.get(
+          `artists/${params.id}/albums?include_groups=single&market=TW&limit=8`
+        );
+        artistSinglesData = res.data.items.map((single) => {
+          return {
+            id: single.id,
+            uri: single.uri,
+            title: single.name,
+            descriptions: `${single.release_date.split('-')[0]}・${
+              single.total_tracks > 1 ? '迷你專輯' : '單曲'
+            }`,
+            coverUrl: single.images[0].url,
+          };
+        });
+      } catch (err) {
+        console.log(err);
+      }
+
+      let relatedArtistsData = [];
+      try {
+        const res = await apiClient.get(`artists/${params.id}/related-artists`);
+        relatedArtistsData = res.data.artists
+          .filter((artist, idx) => idx < 8)
+          .map((artist) => {
+            return {
+              id: artist.id,
+              uri: artist.uri,
+              title: artist.name,
+              descriptions: '藝人',
+              coverUrl: artist.images[0]?.url,
+            };
+          });
+      } catch (err) {
+        console.log(err);
+      }
 
       setHeaderInfo(headerInfoData);
       setActionBarInfo(actionBarData);

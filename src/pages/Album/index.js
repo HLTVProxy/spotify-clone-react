@@ -18,34 +18,23 @@ function Album() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const albumData = await apiClient
-        .get(`albums/${params.id}`)
-        .then((res) => {
-          return res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      let albumData = {};
+      try {
+        const res = await apiClient
+        .get(`albums/${params.id}`);
+        albumData = res.data
+      } catch (err) {
+        console.log(err);
+      }
 
-      const isSaveAlbum = await apiClient
-        .get(`me/albums/contains?ids=${params.id}`)
-        .then((res) => {
-          return res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      const artistAlbumsDataArr = await apiClient
-        .get(
-          `artists/${albumData.artists[0].id}/albums?include_groups=album%2Csingle&market=TW&limit=8`
-        )
-        .then((res) => {
-          return res.data.items;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      let isSaveAlbum = [];
+      try {
+        const res = await apiClient
+        .get(`me/albums/contains?ids=${params.id}`);
+        isSaveAlbum = res.data
+      } catch (err) {
+        console.log(err);
+      }
 
       let albumMsTotal = 0;
       await albumData.tracks.items.forEach((item) => {
@@ -87,15 +76,24 @@ function Album() {
         return { type: copyright.type, text: copyright.text };
       });
 
-      let artistAlbumsData = artistAlbumsDataArr.map((album) => {
-        return {
-          id: album.id,
-          uri: album.uri,
-          title: album.name,
-          descriptions: `${album.release_date.split('-')[0]}・專輯`,
-          coverUrl: album.images[0].url,
-        };
-      });
+      let artistAlbumsData = [];
+      try {
+        const res = await apiClient
+        .get(
+          `artists/${albumData.artists[0].id}/albums?include_groups=album%2Csingle&market=TW&limit=8`
+        )
+        artistAlbumsData = res.data.items.map((album) => {
+          return {
+            id: album.id,
+            uri: album.uri,
+            title: album.name,
+            descriptions: `${album.release_date.split('-')[0]}・專輯`,
+            coverUrl: album.images[0].url,
+          };
+        });
+      } catch (err) {
+        console.log(err);
+      }
 
       setHeaderInfo(headerInfoData);
       setActionBarInfo(actionBarData);
@@ -110,6 +108,7 @@ function Album() {
 
     fetchData();
   }, [params.id]);
+
   return (
     <>
       {headerInfo && (

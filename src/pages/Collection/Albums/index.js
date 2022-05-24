@@ -38,7 +38,9 @@ function Albums() {
   return (
     <>
       <CollectionTabs />
-      <CardList title="專輯" type="albums" detail={false}>{collectionAlbums}</CardList>
+      <CardList title="專輯" type="albums" detail={false}>
+        {collectionAlbums}
+      </CardList>
     </>
   );
 }

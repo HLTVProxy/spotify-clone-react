@@ -35,7 +35,7 @@ import AuthContext from './contexts/AuthContext';
 function App() {
   // Spotify token
   const [token, setToken] = useState('');
-  const { accessToken} = useContext(AuthContext);
+  const { accessToken } = useContext(AuthContext);
 
   useEffect(() => {
     if (accessToken !== '') {

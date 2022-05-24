@@ -8,6 +8,7 @@ function Genre() {
   let params = useParams();
   const { seed } = useContext(SeedContext);
   let tracksSeed = [];
+
   seed.forEach((item, idx) => {
     if (idx < 5) {
       tracksSeed.push(item.id);
@@ -35,6 +36,7 @@ function Genre() {
   ];
 
   let defaultGenre = {};
+
   defaultArr.forEach((item) => {
     if (item.id === params.id) {
       defaultGenre = item;
@@ -61,7 +63,7 @@ function Genre() {
           await fetchGenreName(params.id);
           break;
       }
-    }
+    };
     fetchData();
   }, []);
 
