@@ -2,11 +2,11 @@ export const msInfoHeaderFormat = (ms) => {
   let seconds = Math.floor(ms / 1000);
   let minutes = Math.floor(seconds / 60);
   let hours = Math.floor(minutes / 60);
-  minutes = minutes % 60;
+  minutes = minutes < 60 ? minutes % 60 : minutes;
   hours = hours % 24;
 
-  return hours > 1
-    ? `${hours} 小時 ${minutes}分`
+  return hours >= 1
+    ? `${hours} 小時 ${minutes - hours * 60}分`
     : `${minutes} 分 ${seconds - minutes * 60}秒`;
 };
 
