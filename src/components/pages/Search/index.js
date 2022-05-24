@@ -78,7 +78,7 @@ function Search() {
         placeholder="藝人、歌曲"
         prefix={<SearchOutlined />}
         allowClear
-        onChange={debounce(handleSearch, 300)}
+        onChange={debounce(handleSearch, 500)}
       />
       {search !== '' ? (
         <SearchResult searchText={search}>{resultData}</SearchResult>
